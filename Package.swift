@@ -14,16 +14,18 @@ let package = Package(
     .library(
       name: "ComposableCoreLocation",
       targets: ["ComposableCoreLocation"]
-    ),
+    )
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", .branch("extract-libraries")),
+    .package(
+      url: "https://github.com/pointfreeco/swift-composable-architecture",
+      .branch("extract-libraries"))
   ],
   targets: [
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
       ]
     ),
     .testTarget(
