@@ -151,10 +151,10 @@ implementation of the <code>LocationManager</code>, which is an instance that ho
 
 <p>The true power of building your application and interfacing with Core Location in this way is
 the ability to <em>test</em> how your application interacts with Core Location. It starts by creating
-a <code>TestStore</code> whose environment contains a <code>.mock</code> version of the <code>LocationManager</code>. The
-<code>.mock</code> function allows you to create a fully controlled version of the location manager that
-does not interact with <code>CLLocationManager</code> at all. Instead, you override whichever endpoints
-your feature needs to supply deterministic functionality.</p>
+a <code>TestStore</code> whose environment contains an <code>.unimplemented</code> version of the <code>LocationManager</code>.
+The <code>.unimplemented</code> function allows you to create a fully controlled version of the location
+manager that does not interact with <code>CLLocationManager</code> at all. Instead, you override whichever
+endpoints your feature needs to supply deterministic functionality.</p>
 
 <p>For example, to test the flow of asking for location authorization, being denied, and showing an
 alert, we need to override the <code>create</code> and <code>requestWhenInUseAuthorization</code> endpoints. The
@@ -169,7 +169,7 @@ fire-and-forget effect, but we can make assertions that it was called how we exp
   <span class="variable">initialState</span>: <span class="type">AppState</span>(),
   <span class="variable">reducer</span>: <span class="type">appReducer</span>,
   <span class="variable">environment</span>: <span class="type">AppEnvironment</span>(
-    <span class="variable">locationManager</span>: .<span class="variable">mock</span>(
+    <span class="variable">locationManager</span>: .<span class="variable">unavailable</span>(
       <span class="variable">create</span>: { <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">locationManagerSubject</span>.<span class="type">eraseToEffect</span>() },
       <span class="variable">requestWhenInUseAuthorization</span>: { <span class="keyword">_</span> <span class="keyword">in</span>
         .<span class="variable">fireAndForget</span> { <span class="variable">didRequestInUseAuthorization</span> = <span class="keyword">true</span> }
@@ -541,8 +541,8 @@ its methods. You will typically use this when building for the simulator or devi
 <div class="summary" role="doc-abstract">
     <p>The mock implementation of the <code>LocationManager</code> interface. By default this implementation
 stubs all of its endpoints as functions that immediately <code>fatalError</code>. So, to construct a
-mock you will invoke the <code>.mock</code> static method, and provide implementations for all of the
-endpoints that you expect your test to need access to.</p>
+mock you will invoke the <code>.unimplemented</code> static method, and provide implementations for all
+of the endpoints that you expect your test to need access to.</p>
 
 </div>
 <div class="discussion">
@@ -566,7 +566,7 @@ with a mock location we can do something like this:</p>
   <span class="comment">// A whole bunch of other properties have been omitted.</span>
 )
 
-<span class="keyword">let</span> <span class="variable">manager</span> = <span class="variable">LocationManager</span>.<span class="type">mock</span>(
+<span class="keyword">let</span> <span class="variable">manager</span> = <span class="variable">LocationManager</span>.<span class="type">unimplemented</span>(
   <span class="comment">// Override any CLLocationManager endpoints your test invokes:</span>
 
   <span class="variable">authorizationStatus</span>: { .<span class="variable">authorizedAlways</span> },
@@ -588,7 +588,7 @@ with a mock location we can do something like this:</p>
 
     <footer>
         <p>
-    Generated on <time datetime="2020-10-29T19:21:12+0000">October 29, 2020</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
+    Generated on <time datetime="2020-10-29T19:26:04+0000">October 29, 2020</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-beta.5</span>.
 </p>
     </footer>
 </body>
