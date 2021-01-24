@@ -126,13 +126,13 @@ extension LocationManager {
         .fireAndForget { dependencies[id]?.manager.startUpdatingLocation() }
       }
     #endif
-    
+
     #if os(iOS) || targetEnvironment(macCatalyst)
       manager.startMonitoringSignificantLocationChanges = { id in
         .fireAndForget { dependencies[id]?.manager.startMonitoringSignificantLocationChanges() }
       }
     #endif
-    
+
     #if os(iOS) || targetEnvironment(macCatalyst)
       manager.stopMonitoringVisits = { id in
         .fireAndForget { dependencies[id]?.manager.stopMonitoringVisits() }
@@ -154,7 +154,7 @@ extension LocationManager {
     manager.stopUpdatingLocation = { id in
       .fireAndForget { dependencies[id]?.manager.stopUpdatingLocation() }
     }
-    
+
     #if os(iOS) || targetEnvironment(macCatalyst)
       manager.stopMonitoringSignificantLocationChanges = { id in
         .fireAndForget { dependencies[id]?.manager.stopMonitoringSignificantLocationChanges() }
