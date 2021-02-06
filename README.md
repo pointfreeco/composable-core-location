@@ -18,7 +18,7 @@ Check out the [LocationManager](./Examples/LocationManager) demo to see Composab
 
 ## Basic Usage
 
-To use ComposableCoreLocation your application, you can an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
+To use ComposableCoreLocation in your application, you can add an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
 
 ```swift
 import ComposableCoreLocation
@@ -31,7 +31,7 @@ enum AppAction {
 }
 ```
 
-The `LocationManager.Action` enum holds a case for each delegate method of `CLLocationManagerDelegate`, such as `didUpdateLocations`, `didEnterRegion`, dUpdateHeading`, and more.
+The `LocationManager.Action` enum holds a case for each delegate method of `CLLocationManagerDelegate`, such as `didUpdateLocations`, `didEnterRegion`, `didUpdateHeading`, and more.
 
 Next we add a `LocationManager`, which is a wrapper around `CLLocationManager` that the library provides, to the application's environment of dependencies:
 
