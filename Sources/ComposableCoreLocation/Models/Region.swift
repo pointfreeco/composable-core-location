@@ -9,7 +9,7 @@ public struct Region: Hashable {
   public var notifyOnEntry: Bool
   public var notifyOnExit: Bool
 
-  init(rawValue: CLRegion) {
+  public init(rawValue: CLRegion) {
     self.rawValue = rawValue
 
     self.identifier = rawValue.identifier
@@ -17,7 +17,7 @@ public struct Region: Hashable {
     self.notifyOnExit = rawValue.notifyOnExit
   }
 
-  init(
+    public init(
     identifier: String,
     notifyOnEntry: Bool,
     notifyOnExit: Bool
