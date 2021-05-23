@@ -161,17 +161,17 @@ extension LocationManager {
       }
     #endif
 		
-		#if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-		manager.startMonitoringSignificantLocationChanges = { id in 
-			.fireAndForget { dependencies[id]?.manager.startMonitoringSignificantLocationChanges() }
-		}
-		#endif
-		
-		#if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-		manager.stopMonitoringSignificantLocationChanges = { id in
-			.fireAndForget { dependencies[id]?.manager.stopMonitoringSignificantLocationChanges() }
-		}
-		#endif
+    #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+    manager.startMonitoringSignificantLocationChanges = { id in 
+      .fireAndForget { dependencies[id]?.manager.startMonitoringSignificantLocationChanges() }
+    }
+    #endif
+    
+    #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+    manager.stopMonitoringSignificantLocationChanges = { id in
+      .fireAndForget { dependencies[id]?.manager.stopMonitoringSignificantLocationChanges() }
+    }
+    #endif
 
     return manager
   }()
