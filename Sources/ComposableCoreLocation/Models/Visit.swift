@@ -15,7 +15,7 @@ public struct Visit: Hashable {
   public var horizontalAccuracy: CLLocationAccuracy
 
   init(visit: CLVisit) {
-    self.rawValue = nil
+    self.rawValue = visit
 
     self.arrivalDate = visit.arrivalDate
     self.coordinate = visit.coordinate
