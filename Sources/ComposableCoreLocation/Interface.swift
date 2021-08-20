@@ -303,6 +303,12 @@ public struct LocationManager {
   var requestWhenInUseAuthorization: (AnyHashable) -> Effect<Never, Never> = { _ in
     _unimplemented("requestWhenInUseAuthorization")
   }
+    
+  #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+    var requestTemporaryFullAccuracyAuthorization: (AnyHashable, String) -> Effect<Never, Never> = { _, _  in
+      _unimplemented("requestTemporaryFullAccuracyAuthorization")
+    }
+  #endif
 
   var set: (AnyHashable, Properties) -> Effect<Never, Never> = { _, _ in _unimplemented("set") }
 
@@ -424,6 +430,11 @@ public struct LocationManager {
   @available(macOS, unavailable)
   public func requestWhenInUseAuthorization(id: AnyHashable) -> Effect<Never, Never> {
     self.requestWhenInUseAuthorization(id)
+  }
+    
+  @available(iOS 14.0, macCatalyst 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+  public func requestTemporaryFullAccuracyAuthorization(id: AnyHashable, purposeKey: String) -> Effect<Never, Never> {
+    self.requestTemporaryFullAccuracyAuthorization(id, purposeKey)
   }
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.

@@ -73,6 +73,9 @@
       requestWhenInUseAuthorization: @escaping (AnyHashable) -> Effect<Never, Never> = { _ in
         _unimplemented("requestWhenInUseAuthorization")
       },
+      requestTemporaryFullAccuracyAuthorization: @escaping (AnyHashable, String) -> Effect<Never, Never> = { _, _ in
+        _unimplemented("requestTemporaryFullAccuracyAuthorization")
+      },
       set: @escaping (_ id: AnyHashable, _ properties: Properties) -> Effect<Never, Never> = {
         _, _ in _unimplemented("set")
       },
@@ -126,6 +129,7 @@
         requestAlwaysAuthorization: requestAlwaysAuthorization,
         requestLocation: requestLocation,
         requestWhenInUseAuthorization: requestWhenInUseAuthorization,
+        requestTemporaryFullAccuracyAuthorization: requestTemporaryFullAccuracyAuthorization,
         set: set,
         significantLocationChangeMonitoringAvailable: significantLocationChangeMonitoringAvailable,
         startMonitoringForRegion: startMonitoringForRegion,
