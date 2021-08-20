@@ -304,11 +304,9 @@ public struct LocationManager {
     _unimplemented("requestWhenInUseAuthorization")
   }
     
-  #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-    var requestTemporaryFullAccuracyAuthorization: (AnyHashable, String) -> Effect<Never, Never> = { _, _  in
-      _unimplemented("requestTemporaryFullAccuracyAuthorization")
-    }
-  #endif
+  var requestTemporaryFullAccuracyAuthorization: (AnyHashable, String) -> Effect<Never, Never> = { _, _  in
+    _unimplemented("requestTemporaryFullAccuracyAuthorization")
+  }
 
   var set: (AnyHashable, Properties) -> Effect<Never, Never> = { _, _ in _unimplemented("set") }
 
