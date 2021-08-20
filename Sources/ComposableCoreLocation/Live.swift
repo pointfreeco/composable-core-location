@@ -72,13 +72,18 @@ extension LocationManager {
     #if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
       manager.requestWhenInUseAuthorization = { id in
         .fireAndForget { dependencies[id]?.manager.requestWhenInUseAuthorization() }
-      }
+    }
     #endif
     
     if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-      manager.requestTemporaryFullAccuracyAuthorization = { id, purposeKey in
-        .fireAndForget { dependencies[id]?.manager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey) }
-      }
+      #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+        manager.requestTemporaryFullAccuracyAuthorization = { id, purposeKey in
+          .fireAndForget {
+            dependencies[id]?.manager
+              .requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey)
+          }
+        }
+      #endif
     }
 
     manager.set = { id, properties in
