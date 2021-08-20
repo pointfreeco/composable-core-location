@@ -73,7 +73,9 @@
       requestWhenInUseAuthorization: @escaping (AnyHashable) -> Effect<Never, Never> = { _ in
         _unimplemented("requestWhenInUseAuthorization")
       },
-      requestTemporaryFullAccuracyAuthorization: @escaping (AnyHashable, String) -> Effect<Never, Never> = { _, _ in
+      requestTemporaryFullAccuracyAuthorization: @escaping (AnyHashable, String) -> Effect<
+        Never, Never
+      > = { _, _ in
         _unimplemented("requestTemporaryFullAccuracyAuthorization")
       },
       set: @escaping (_ id: AnyHashable, _ properties: Properties) -> Effect<Never, Never> = {
