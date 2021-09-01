@@ -3,19 +3,19 @@ import ComposableArchitecture
 import CoreLocation
 
 extension LocationManager {
-
   /// The live implementation of the `LocationManager` interface. This implementation is capable of
   /// creating real `CLLocationManager` instances, listening to its delegate methods, and invoking
   /// its methods. You will typically use this when building for the simulator or device:
   ///
-  ///     let store = Store(
-  ///       initialState: AppState(),
-  ///       reducer: appReducer,
-  ///       environment: AppEnvironment(
-  ///         locationManager: LocationManager.live
-  ///       )
-  ///     )
-  ///
+  /// ```swift
+  /// let store = Store(
+  ///   initialState: AppState(),
+  ///   reducer: appReducer,
+  ///   environment: AppEnvironment(
+  ///     locationManager: LocationManager.live
+  ///   )
+  /// )
+  /// ```
   public static let live: LocationManager = { () -> LocationManager in
     var manager = LocationManager()
 

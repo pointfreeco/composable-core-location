@@ -21,8 +21,8 @@
 		CA74947E2474A4F100B13019 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946B2474A4F100B13019 /* MapView.swift */; };
 		CA74947F2474A4F100B13019 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946C2474A4F100B13019 /* Helpers.swift */; };
 		CA7494802474A4F100B13019 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946C2474A4F100B13019 /* Helpers.swift */; };
-		CA7494812474A4F100B13019 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946E2474A4F100B13019 /* Mock.swift */; };
-		CA7494822474A4F100B13019 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946E2474A4F100B13019 /* Mock.swift */; };
+		CA7494812474A4F100B13019 /* Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946E2474A4F100B13019 /* Failing.swift */; };
+		CA7494822474A4F100B13019 /* Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946E2474A4F100B13019 /* Failing.swift */; };
 		CA7494832474A4F100B13019 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946F2474A4F100B13019 /* Client.swift */; };
 		CA7494842474A4F100B13019 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA74946F2474A4F100B13019 /* Client.swift */; };
 		CA7494852474A4F100B13019 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7494702474A4F100B13019 /* Models.swift */; };
@@ -67,7 +67,7 @@
 		CA17CCCC24745B1000BDDF11 /* LocationManagerDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocationManagerDesktop.entitlements; sourceTree = "<group>"; };
 		CA74946B2474A4F100B13019 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		CA74946C2474A4F100B13019 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		CA74946E2474A4F100B13019 /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		CA74946E2474A4F100B13019 /* Failing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Failing.swift; sourceTree = "<group>"; };
 		CA74946F2474A4F100B13019 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		CA7494702474A4F100B13019 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CA7494712474A4F100B13019 /* Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Live.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		CA74946D2474A4F100B13019 /* LocalSearchClient */ = {
 			isa = PBXGroup;
 			children = (
-				CA74946E2474A4F100B13019 /* Mock.swift */,
+				CA74946E2474A4F100B13019 /* Failing.swift */,
 				CA74946F2474A4F100B13019 /* Client.swift */,
 				CA7494702474A4F100B13019 /* Models.swift */,
 				CA7494712474A4F100B13019 /* Live.swift */,
@@ -290,7 +290,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Brandon Williams";
 				TargetAttributes = {
 					CA17CC0824720BBA00BDDF11 = {
@@ -371,7 +371,7 @@
 			files = (
 				CA7494892474A4F100B13019 /* AppCore.swift in Sources */,
 				CA17CC0F24720BBA00BDDF11 /* SceneDelegate.swift in Sources */,
-				CA7494812474A4F100B13019 /* Mock.swift in Sources */,
+				CA7494812474A4F100B13019 /* Failing.swift in Sources */,
 				CA7494832474A4F100B13019 /* Client.swift in Sources */,
 				CA74947D2474A4F100B13019 /* MapView.swift in Sources */,
 				CA17CC1124720BBA00BDDF11 /* LocationManagerView.swift in Sources */,
@@ -387,7 +387,7 @@
 			files = (
 				CA74948A2474A4F100B13019 /* AppCore.swift in Sources */,
 				CA17CCC224745B1000BDDF11 /* LocationManagerView.swift in Sources */,
-				CA7494822474A4F100B13019 /* Mock.swift in Sources */,
+				CA7494822474A4F100B13019 /* Failing.swift in Sources */,
 				CA7494842474A4F100B13019 /* Client.swift in Sources */,
 				CA74947E2474A4F100B13019 /* MapView.swift in Sources */,
 				CA17CCC024745B1000BDDF11 /* AppDelegate.swift in Sources */,
@@ -466,6 +466,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -525,6 +526,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -593,6 +595,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LocationManagerDesktop/LocationManagerDesktop.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;
@@ -614,6 +617,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LocationManagerDesktop/LocationManagerDesktop.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_PREVIEWS = YES;

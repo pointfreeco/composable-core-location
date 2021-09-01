@@ -1,44 +1,8 @@
-#if DEBUG
-  import CoreLocation
-  import ComposableArchitecture
+// NB: Deprecated after 0.1.0:
 
+#if DEBUG
   extension LocationManager {
-    /// The mock implementation of the `LocationManager` interface. By default this implementation
-    /// stubs all of its endpoints as functions that immediately `fatalError`. So, to construct a
-    /// mock you will invoke the `.unimplemented` static method, and provide implementations for all
-    /// of the endpoints that you expect your test to need access to.
-    ///
-    /// This allows you to test an even deeper property of your features: that they use only the
-    /// location manager endpoints that you specify and nothing else. This can be useful as a
-    /// measurement of just how complex a particular test is. Tests that need to stub many endpoints
-    /// are in some sense more complicated than tests that only need to stub a few endpoints. It's
-    /// not necessarily a bad thing to stub many endpoints. Sometimes it's needed.
-    ///
-    /// As an example, to create a mock manager that simulates a location manager that has already
-    /// authorized access to location, and when a location is requested it immediately responds
-    /// with a mock location we can do something like this:
-    ///
-    ///     // Send actions to this subject to simulate the location manager's delegate methods
-    ///     // being called.
-    ///     let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
-    ///
-    ///     // The mock location we want the manager to say we are located at
-    ///     let mockLocation = Location(
-    ///       coordinate: CLLocationCoordinate2D(latitude: 40.6501, longitude: -73.94958),
-    ///       // A whole bunch of other properties have been omitted.
-    ///     )
-    ///
-    ///     let manager = LocationManager.unimplemented(
-    ///       // Override any CLLocationManager endpoints your test invokes:
-    ///
-    ///       authorizationStatus: { .authorizedAlways },
-    ///       create: { _ in locationManagerSubject.eraseToEffect() },
-    ///       locationServicesEnabled: { true },
-    ///       requestLocation: { _ in
-    ///         .fireAndForget { locationManagerSubject.send(.didUpdateLocations([mockLocation])) }
-    ///       }
-    ///     )
-    ///
+    @available(*, deprecated, renamed: "failing")
     public static func unimplemented(
       accuracyAuthorization: @escaping (AnyHashable) -> AccuracyAuthorization? = { _ in
         _unimplemented("accuracyAuthorization")
@@ -147,17 +111,17 @@
       )
     }
   }
-#endif
 
-public func _unimplemented(
-  _ function: StaticString, file: StaticString = #file, line: UInt = #line
-) -> Never {
-  fatalError(
-    """
-    `\(function)` was called but is not implemented. Be sure to provide an implementation for
-    this endpoint when creating the mock.
-    """,
-    file: file,
-    line: line
-  )
-}
+  public func _unimplemented(
+    _ function: StaticString, file: StaticString = #file, line: UInt = #line
+  ) -> Never {
+    fatalError(
+      """
+      `\(function)` was called but is not implemented. Be sure to provide an implementation for
+      this endpoint when creating the mock.
+      """,
+      file: file,
+      line: line
+    )
+  }
+#endif

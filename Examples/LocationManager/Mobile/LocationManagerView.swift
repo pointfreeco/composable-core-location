@@ -99,13 +99,13 @@ struct ContentView: View {
         coordinate: CLLocationCoordinate2D(latitude: 40.6501, longitude: -73.94958)
       )
       let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
-      let locationManager = LocationManager.unimplemented(
-        authorizationStatus: { .authorizedAlways },
-        create: { _ in locationManagerSubject.eraseToEffect() },
-        locationServicesEnabled: { true },
-        requestLocation: { _ in
-          .fireAndForget { locationManagerSubject.send(.didUpdateLocations([mockLocation])) }
-        })
+      var locationManager = LocationManager.live
+      locationManager.authorizationStatus = { .authorizedAlways }
+      locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
+      locationManager.locationServicesEnabled = { true }
+      locationManager.requestLocation = { _ in
+        .fireAndForget { locationManagerSubject.send(.didUpdateLocations([mockLocation])) }
+      }
 
       let appView = LocationManagerView(
         store: Store(
