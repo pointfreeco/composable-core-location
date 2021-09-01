@@ -51,7 +51,9 @@ extension LocationManager {
     },
     dismissHeadingCalibrationDisplay: { id in
       .fireAndForget {
-        dependencies[id]?.manager.dismissHeadingCalibrationDisplay()
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.dismissHeadingCalibrationDisplay()
+        #endif
       }
     },
     heading: { id in
@@ -61,12 +63,28 @@ extension LocationManager {
         return nil
       #endif
     },
-    headingAvailable: CLLocationManager.headingAvailable,
-    isRangingAvailable: CLLocationManager.isRangingAvailable,
+    headingAvailable: {
+      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        return CLLocationManager.headingAvailable()
+      #else
+        return false
+      #endif
+    },
+    isRangingAvailable: {
+      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        return CLLocationManager.isRangingAvailable()
+      #else
+        return false
+      #endif
+    },
     location: { id in dependencies[id]?.manager.location.map(Location.init(rawValue:)) },
     locationServicesEnabled: CLLocationManager.locationServicesEnabled,
     maximumRegionMonitoringDistance: { id in
-      dependencies[id]?.manager.maximumRegionMonitoringDistance ?? CLLocationDistanceMax
+      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        return dependencies[id]?.manager.maximumRegionMonitoringDistance ?? CLLocationDistanceMax
+      #else
+        return CLLocationDistanceMax
+      #endif
     },
     monitoredRegions: { id in
       #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
@@ -141,7 +159,13 @@ extension LocationManager {
         #endif
       }
     },
-    significantLocationChangeMonitoringAvailable: CLLocationManager.significantLocationChangeMonitoringAvailable,
+    significantLocationChangeMonitoringAvailable: {
+      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        return CLLocationManager.significantLocationChangeMonitoringAvailable()
+      #else
+        return false
+      #endif
+    },
     startMonitoringForRegion: { id, region in
       .fireAndForget {
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
