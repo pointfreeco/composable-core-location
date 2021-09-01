@@ -71,7 +71,7 @@ extension LocationManager {
       #endif
     },
     isRangingAvailable: {
-      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+      #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
         return CLLocationManager.isRangingAvailable()
       #else
         return false
@@ -80,7 +80,7 @@ extension LocationManager {
     location: { id in dependencies[id]?.manager.location.map(Location.init(rawValue:)) },
     locationServicesEnabled: CLLocationManager.locationServicesEnabled,
     maximumRegionMonitoringDistance: { id in
-      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+      #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
         return dependencies[id]?.manager.maximumRegionMonitoringDistance ?? CLLocationDistanceMax
       #else
         return CLLocationDistanceMax
@@ -160,7 +160,7 @@ extension LocationManager {
       }
     },
     significantLocationChangeMonitoringAvailable: {
-      #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+      #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
         return CLLocationManager.significantLocationChangeMonitoringAvailable()
       #else
         return false
