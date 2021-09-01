@@ -108,11 +108,11 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, ac
       state.isRequestingCurrentLocation = true
       #if os(macOS)
         return environment.locationManager
-          .requestAlwaysAuthorization(id: LocationManagerId())
+          .requestAlwaysAuthorization()
           .fireAndForget()
       #else
         return environment.locationManager
-          .requestWhenInUseAuthorization(id: LocationManagerId())
+          .requestWhenInUseAuthorization()
           .fireAndForget()
       #endif
 
@@ -126,7 +126,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, ac
 
     case .authorizedAlways, .authorizedWhenInUse:
       return environment.locationManager
-        .requestLocation(id: LocationManagerId())
+        .requestLocation()
         .fireAndForget()
 
     @unknown default:
@@ -155,12 +155,12 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, ac
     return .none
 
   case .onAppear:
-    return environment.locationManager.create(id: LocationManagerId())
+    return environment.locationManager.delegate()
       .map(AppAction.locationManager)
+      .cancellable(id: LocationManagerId())
 
   case .onDisappear:
-    return environment.locationManager.destroy(id: LocationManagerId())
-      .fireAndForget()
+    return .cancel(id: LocationManagerId())
 
   case let .updateRegion(region):
     state.region = region
@@ -196,7 +196,7 @@ private let locationManagerReducer = Reducer<AppState, LocationManager.Action, A
     .didChangeAuthorization(.authorizedWhenInUse):
     if state.isRequestingCurrentLocation {
       return environment.locationManager
-        .requestLocation(id: LocationManagerId())
+        .requestLocation()
         .fireAndForget()
     }
     return .none

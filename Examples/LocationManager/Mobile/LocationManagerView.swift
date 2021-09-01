@@ -101,9 +101,9 @@ struct ContentView: View {
       let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
       var locationManager = LocationManager.live
       locationManager.authorizationStatus = { .authorizedAlways }
-      locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
+      locationManager.delegate = { locationManagerSubject.eraseToEffect() }
       locationManager.locationServicesEnabled = { true }
-      locationManager.requestLocation = { _ in
+      locationManager.requestLocation = {
         .fireAndForget { locationManagerSubject.send(.didUpdateLocations([mockLocation])) }
       }
 

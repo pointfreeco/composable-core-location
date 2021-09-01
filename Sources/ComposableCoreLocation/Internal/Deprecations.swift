@@ -2,7 +2,17 @@
 
 #if DEBUG
   extension LocationManager {
-    @available(*, deprecated, renamed: "failing")
+    @available(*, deprecated, message: "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'")
+    public func create(id: AnyHashable) -> Effect<Action, Never> {
+      self.delegate().cancellable(id: id)
+    }
+
+    @available(*, deprecated, message: "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'")
+    public func destroy(id: AnyHashable) -> Effect<Never, Never> {
+      .cancel(id: id)
+    }
+
+    @available(*, unavailable, message: "Use 'LocationManager.failing', instead")
     public static func unimplemented(
       accuracyAuthorization: @escaping (AnyHashable) -> AccuracyAuthorization? = { _ in
         _unimplemented("accuracyAuthorization")
@@ -79,36 +89,7 @@
         _unimplemented("stopUpdatingLocation")
       }
     ) -> Self {
-      Self(
-        accuracyAuthorization: accuracyAuthorization,
-        authorizationStatus: authorizationStatus,
-        create: create,
-        destroy: destroy,
-        dismissHeadingCalibrationDisplay: dismissHeadingCalibrationDisplay,
-        heading: heading,
-        headingAvailable: headingAvailable,
-        isRangingAvailable: isRangingAvailable,
-        location: location,
-        locationServicesEnabled: locationServicesEnabled,
-        maximumRegionMonitoringDistance: maximumRegionMonitoringDistance,
-        monitoredRegions: monitoredRegions,
-        requestAlwaysAuthorization: requestAlwaysAuthorization,
-        requestLocation: requestLocation,
-        requestWhenInUseAuthorization: requestWhenInUseAuthorization,
-        requestTemporaryFullAccuracyAuthorization: requestTemporaryFullAccuracyAuthorization,
-        set: set,
-        significantLocationChangeMonitoringAvailable: significantLocationChangeMonitoringAvailable,
-        startMonitoringForRegion: startMonitoringForRegion,
-        startMonitoringSignificantLocationChanges: startMonitoringSignificantLocationChanges,
-        startMonitoringVisits: startMonitoringVisits,
-        startUpdatingHeading: startUpdatingHeading,
-        startUpdatingLocation: startUpdatingLocation,
-        stopMonitoringForRegion: stopMonitoringForRegion,
-        stopMonitoringSignificantLocationChanges: stopMonitoringSignificantLocationChanges,
-        stopMonitoringVisits: stopMonitoringVisits,
-        stopUpdatingHeading: stopUpdatingHeading,
-        stopUpdatingLocation: stopUpdatingLocation
-      )
+      fatalError()
     }
   }
 

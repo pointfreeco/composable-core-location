@@ -44,25 +44,21 @@ struct AppEnvironment {
 }
 ```
 
-Then, we create a location manager and request authorization from our application's reducer by returning an effect from an action to kick things off. One good choice for such an action is the `onAppear` of your view. You must also provide a unique identifier to associate with the location manager you create since it is possible to have multiple managers running at once.
+Then, we simultaneously subscribe to delegate actions and request authorization from our application's reducer by returning an effect from an action to kick things off. One good choice for such an action is the `onAppear` of your view.
 
 ```swift
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> {
   state, action, environment in
 
-  // A unique identifier for our location manager, just in case we want to use
-  // more than one in our application.
-  struct LocationManagerId: Hashable {}
-
   switch action {
   case .onAppear:
     return .merge(
       environment.locationManager
-        .create(id: LocationManagerId())
+        .delegate()
         .map(AppAction.locationManager),
 
       environment.locationManager
-        .requestWhenInUseAuthorization(id: LocationManagerId())
+        .requestWhenInUseAuthorization()
         .fireAndForget()
       )
 
@@ -78,7 +74,7 @@ case .locationManager(.didChangeAuthorization(.authorizedAlways)),
      .locationManager(.didChangeAuthorization(.authorizedWhenInUse)):
 
   return environment.locationManager
-    .requestLocation(id: LocationManagerId())
+    .requestLocation()
     .fireAndForget()
 ```
 
@@ -140,8 +136,8 @@ let store = TestStore(
 var didRequestInUseAuthorization = false
 let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
 
-store.environment.locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
-store.environment.locationManager.requestWhenInUseAuthorization = { _ in
+store.environment.locationManager.create = { locationManagerSubject.eraseToEffect() }
+store.environment.locationManager.requestWhenInUseAuthorization = {
   .fireAndForget { didRequestInUseAuthorization = true }
 }
 ```
