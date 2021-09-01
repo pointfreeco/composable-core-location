@@ -60,7 +60,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> {
       environment.locationManager
         .requestWhenInUseAuthorization()
         .fireAndForget()
-      )
+    )
 
   ...
   }
