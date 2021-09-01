@@ -124,51 +124,45 @@ let store = Store(
 
 This is enough to implement a basic application that interacts with Core Location.
 
-The true power of building your application and interfacing with Core Location in this way is the ability to _test_ how your application interacts with Core Location. It starts by creating a `TestStore` whose environment contains an `.unimplemented` version of the `LocationManager`. The `.unimplemented` function allows you to create a fully controlled version of the location manager that does not interact with `CLLocationManager` at all. Instead, you override whichever endpoints your feature needs to supply deterministic functionality.
+The true power of building your application and interfacing with Core Location in this way is the ability to _test_ how your application interacts with Core Location. It starts by creating a `TestStore` whose environment contains a `.failing` version of the `LocationManager`. Then, you can selectively override whichever endpoints your feature needs to supply deterministic functionality.
 
 For example, to test the flow of asking for location authorization, being denied, and showing an alert, we need to override the `create` and `requestWhenInUseAuthorization` endpoints. The `create` endpoint needs to return an effect that emits the delegate actions, which we can control via a publish subject. And the `requestWhenInUseAuthorization` endpoint is a fire-and-forget effect, but we can make assertions that it was called how we expect.
 
 ```swift
-var didRequestInUseAuthorization = false
-let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
-
 let store = TestStore(
   initialState: AppState(),
   reducer: appReducer,
   environment: AppEnvironment(
-    locationManager: .unimplemented(
-      create: { _ in locationManagerSubject.eraseToEffect() },
-      requestWhenInUseAuthorization: { _ in
-        .fireAndForget { didRequestInUseAuthorization = true }
-    })
+    locationManager: .failing
   )
 )
+
+var didRequestInUseAuthorization = false
+let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
+
+store.environment.locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
+store.environment.locationManager.requestWhenInUseAuthorization = { _ in
+  .fireAndForget { didRequestInUseAuthorization = true }
+}
 ```
 
 Then we can write an assertion that simulates a sequence of user steps and location manager delegate actions, and we can assert against how state mutates and how effects are received. For example, we can have the user come to the screen, deny the location authorization request, and then assert that an effect was received which caused the alert to show:
 
 ```swift
-store.assert(
-  .send(.onAppear),
+store.send(.onAppear)
 
-  // Simulate the user denying location access
-  .do {
-    locationManagerSubject.send(.didChangeAuthorization(.denied))
-  },
+// Simulate the user denying location access
+locationManagerSubject.send(.didChangeAuthorization(.denied))
 
-  // We receive the authorization change delegate action from the effect
-  .receive(.locationManager(.didChangeAuthorization(.denied))) {
-    $0.alert = """
-      Please give location access so that we can show you some cool stuff.
-      """
-  },
+// We receive the authorization change delegate action from the effect
+store.receive(.locationManager(.didChangeAuthorization(.denied))) {
+  $0.alert = """
+    Please give location access so that we can show you some cool stuff.
+    """
 
-  // Store assertions require all effects to be completed, so we complete
-  // the subject manually.
-  .do {
-    locationManagerSubject.send(completion: .finished)
-  }
-)
+// Store assertions require all effects to be completed, so we complete
+// the subject manually.
+locationManagerSubject.send(completion: .finished)
 ```
 
 And this is only the tip of the iceberg. We can further test what happens when we are granted authorization by the user and the request for their location returns a specific location that we control, and even what happens when the request for their location fails. It is very easy to write these tests, and we can test deep, subtle properties of our application.

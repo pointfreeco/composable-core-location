@@ -258,135 +258,97 @@ public struct LocationManager {
     }
   }
 
-  public var accuracyAuthorization: (AnyHashable) -> AccuracyAuthorization? = { _ in
-    _unimplemented("accuracyAuthorization")
-  }
+  public var accuracyAuthorization: (AnyHashable) -> AccuracyAuthorization?
 
-  public var authorizationStatus: () -> CLAuthorizationStatus = {
-    _unimplemented("authorizationStatus")
-  }
+  public var authorizationStatus: () -> CLAuthorizationStatus
 
-  public var create: (AnyHashable) -> Effect<Action, Never> = { _ in _unimplemented("create") }
+  public var create: (AnyHashable) -> Effect<Action, Never>
 
-  public var destroy: (AnyHashable) -> Effect<Never, Never> = { _ in _unimplemented("destroy") }
+  public var destroy: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var dismissHeadingCalibrationDisplay: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("dismissHeadingCalibrationDisplay")
-  }
+  public var dismissHeadingCalibrationDisplay: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var heading: (AnyHashable) -> Heading? = { _ in _unimplemented("heading") }
+  public var heading: (AnyHashable) -> Heading?
 
   @available(tvOS, unavailable)
-  public var headingAvailable: () -> Bool = { _unimplemented("headingAvailable") }
+  public var headingAvailable: () -> Bool
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var isRangingAvailable: () -> Bool = { _unimplemented("isRangingAvailable") }
+  public var isRangingAvailable: () -> Bool
 
-  public var location: (AnyHashable) -> Location? = { _ in _unimplemented("location") }
+  public var location: (AnyHashable) -> Location?
 
-  public var locationServicesEnabled: () -> Bool = { _unimplemented("locationServicesEnabled") }
-
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
-  public var maximumRegionMonitoringDistance: (AnyHashable) -> CLLocationDistance = { _ in
-    _unimplemented("maximumRegionMonitoringDistance")
-  }
+  public var locationServicesEnabled: () -> Bool
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var monitoredRegions: (AnyHashable) -> Set<Region> = { _ in _unimplemented("monitoredRegions") }
+  public var maximumRegionMonitoringDistance: (AnyHashable) -> CLLocationDistance
 
   @available(tvOS, unavailable)
-  public var requestAlwaysAuthorization: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("requestAlwaysAuthorization")
-  }
+  @available(watchOS, unavailable)
+  public var monitoredRegions: (AnyHashable) -> Set<Region>
 
-  public var requestLocation: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("requestLocation")
-  }
+  @available(tvOS, unavailable)
+  public var requestAlwaysAuthorization: (AnyHashable) -> Effect<Never, Never>
+
+  public var requestLocation: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
-  public var requestWhenInUseAuthorization: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("requestWhenInUseAuthorization")
-  }
+  public var requestWhenInUseAuthorization: (AnyHashable) -> Effect<Never, Never>
 
   public var requestTemporaryFullAccuracyAuthorization: (AnyHashable, String)
-  -> Effect<Never, Never> = { _, _ in
-    _unimplemented("requestTemporaryFullAccuracyAuthorization")
-  }
+  -> Effect<Never, Never>
 
-  public var set: (AnyHashable, Properties) -> Effect<Never, Never> = { _, _ in _unimplemented("set") }
+  public var set: (AnyHashable, Properties) -> Effect<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var significantLocationChangeMonitoringAvailable: () -> Bool = {
-    _unimplemented("significantLocationChangeMonitoringAvailable")
-  }
+  public var significantLocationChangeMonitoringAvailable: () -> Bool
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringForRegion: (AnyHashable, Region) -> Effect<Never, Never> = { _, _ in
-    _unimplemented("startMonitoringForRegion")
-  }
+  public var startMonitoringForRegion: (AnyHashable, Region) -> Effect<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringSignificantLocationChanges: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("startMonitoringSignificantLocationChanges")
-  }
+  public var startMonitoringSignificantLocationChanges: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringVisits: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("startMonitoringVisits")
-  }
+  public var startMonitoringVisits: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var startUpdatingHeading: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("startUpdatingHeading")
-  }
+  public var startUpdatingHeading: (AnyHashable) -> Effect<Never, Never>
 
   @available(tvOS, unavailable)
-  public var startUpdatingLocation: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("startUpdatingLocation")
-  }
+  public var startUpdatingLocation: (AnyHashable) -> Effect<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var stopMonitoringForRegion: (AnyHashable, Region) -> Effect<Never, Never> = { _, _ in
-    _unimplemented("stopMonitoringForRegion")
-  }
+  public var stopMonitoringForRegion: (AnyHashable, Region) -> Effect<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var stopMonitoringSignificantLocationChanges: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("stopMonitoringSignificantLocationChanges")
-  }
+  public var stopMonitoringSignificantLocationChanges: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var stopMonitoringVisits: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("stopMonitoringVisits")
-  }
+  public var stopMonitoringVisits: (AnyHashable) -> Effect<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var stopUpdatingHeading: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("stopUpdatingHeading")
-  }
+  public var stopUpdatingHeading: (AnyHashable) -> Effect<Never, Never>
 
-  public var stopUpdatingLocation: (AnyHashable) -> Effect<Never, Never> = { _ in
-    _unimplemented("stopUpdatingLocation")
-  }
+  public var stopUpdatingLocation: (AnyHashable) -> Effect<Never, Never>
 
   @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *)
   public func accuracyAuthorization(id: AnyHashable) -> AccuracyAuthorization? {

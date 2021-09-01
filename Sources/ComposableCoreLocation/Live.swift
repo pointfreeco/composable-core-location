@@ -16,12 +16,17 @@ extension LocationManager {
   ///   )
   /// )
   /// ```
-  public static let live: LocationManager = { () -> LocationManager in
-    var manager = LocationManager()
-
-    manager.authorizationStatus = CLLocationManager.authorizationStatus
-
-    manager.create = { id in
+  public static let live = Self(
+    accuracyAuthorization: { id in
+      #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+        if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
+          return AccuracyAuthorization(dependencies[id]?.manager.accuracyAuthorization)
+        }
+      #endif
+      return nil
+    },
+    authorizationStatus: CLLocationManager.authorizationStatus,
+    create: { id in
       Effect.run { subscriber in
         let manager = CLLocationManager()
         var delegate = LocationManagerDelegate(subscriber)
@@ -37,56 +42,67 @@ extension LocationManager {
           dependencies[id] = nil
         }
       }
-    }
-
-    manager.destroy = { id in
+    },
+    destroy: { id in
       .fireAndForget {
         dependencies[id]?.subscriber.send(completion: .finished)
         dependencies[id] = nil
       }
-    }
-
-    manager.locationServicesEnabled = CLLocationManager.locationServicesEnabled
-
-    manager.location = { id in dependencies[id]?.manager.location.map(Location.init(rawValue:)) }
-
-    manager.accuracyAuthorization = { id in
-      #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-        if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-          return AccuracyAuthorization(dependencies[id]?.manager.accuracyAuthorization)
-        }
+    },
+    dismissHeadingCalibrationDisplay: { id in
+      .fireAndForget {
+        dependencies[id]?.manager.dismissHeadingCalibrationDisplay()
+      }
+    },
+    heading: { id in
+      #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        return dependencies[id]?.manager.heading.map(Heading.init(rawValue:))
+      #else
+        return nil
       #endif
-      return nil
-    }
-
-    manager.requestLocation = { id in
+    },
+    headingAvailable: CLLocationManager.headingAvailable,
+    isRangingAvailable: CLLocationManager.isRangingAvailable,
+    location: { id in dependencies[id]?.manager.location.map(Location.init(rawValue:)) },
+    locationServicesEnabled: CLLocationManager.locationServicesEnabled,
+    maximumRegionMonitoringDistance: { id in
+      dependencies[id]?.manager.maximumRegionMonitoringDistance ?? CLLocationDistanceMax
+    },
+    monitoredRegions: { id in
+      #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+        return Set(dependencies[id]?.manager.monitoredRegions.map(Region.init(rawValue:)) ?? [])
+      #else
+        return []
+      #endif
+    },
+    requestAlwaysAuthorization: { id in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.requestAlwaysAuthorization()
+        #endif
+      }
+    },
+    requestLocation: { id in
       .fireAndForget { dependencies[id]?.manager.requestLocation() }
-    }
-
-    #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-      manager.requestAlwaysAuthorization = { id in
-        .fireAndForget { dependencies[id]?.manager.requestAlwaysAuthorization() }
+    },
+    requestWhenInUseAuthorization: { id in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.requestWhenInUseAuthorization()
+        #endif
       }
-    #endif
-
-    #if os(iOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
-      manager.requestWhenInUseAuthorization = { id in
-        .fireAndForget { dependencies[id]?.manager.requestWhenInUseAuthorization() }
-      }
-    #endif
-
-    if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-      #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-        manager.requestTemporaryFullAccuracyAuthorization = { id, purposeKey in
-          .fireAndForget {
+    },
+    requestTemporaryFullAccuracyAuthorization: { id, purposeKey in
+      .fireAndForget {
+        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+          if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
             dependencies[id]?.manager
               .requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey)
           }
-        }
-      #endif
-    }
-
-    manager.set = { id, properties in
+        #endif
+      }
+    },
+    set: { id, properties in
       .fireAndForget {
         guard let manager = dependencies[id]?.manager else { return }
 
@@ -124,56 +140,79 @@ extension LocationManager {
           }
         #endif
       }
+    },
+    significantLocationChangeMonitoringAvailable: CLLocationManager.significantLocationChangeMonitoringAvailable,
+    startMonitoringForRegion: { id, region in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.startMonitoring(for: region.rawValue!)
+        #endif
+      }
+    },
+    startMonitoringSignificantLocationChanges: { id in
+      .fireAndForget {
+        #if os(iOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.startMonitoringSignificantLocationChanges()
+        #endif
+      }
+    },
+    startMonitoringVisits: { id in
+      .fireAndForget {
+        #if os(iOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.startMonitoringVisits()
+        #endif
+      }
+    },
+    startUpdatingHeading: { id in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.startUpdatingHeading()
+        #endif
+      }
+    },
+    startUpdatingLocation: { id in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.startUpdatingLocation()
+        #endif
+      }
+    },
+    stopMonitoringForRegion: { id, region in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.stopMonitoring(for: region.rawValue!)
+        #endif
+      }
+    },
+    stopMonitoringSignificantLocationChanges: { id in
+      .fireAndForget {
+        #if os(iOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.stopMonitoringSignificantLocationChanges()
+        #endif
+      }
+    },
+    stopMonitoringVisits: { id in
+      .fireAndForget {
+        #if os(iOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.stopMonitoringVisits()
+        #endif
+      }
+    },
+    stopUpdatingHeading: { id in
+      .fireAndForget {
+        #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.stopUpdatingHeading()
+        #endif
+      }
+    },
+    stopUpdatingLocation: { id in
+      .fireAndForget {
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+          dependencies[id]?.manager.stopUpdatingLocation()
+        #endif
+      }
     }
-
-    #if os(iOS) || targetEnvironment(macCatalyst)
-      manager.startMonitoringVisits = { id in
-        .fireAndForget { dependencies[id]?.manager.startMonitoringVisits() }
-      }
-    #endif
-
-    #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-      manager.startUpdatingLocation = { id in
-        .fireAndForget { dependencies[id]?.manager.startUpdatingLocation() }
-      }
-    #endif
-
-    #if os(iOS) || targetEnvironment(macCatalyst)
-      manager.startMonitoringSignificantLocationChanges = { id in
-        .fireAndForget { dependencies[id]?.manager.startMonitoringSignificantLocationChanges() }
-      }
-    #endif
-
-    #if os(iOS) || targetEnvironment(macCatalyst)
-      manager.stopMonitoringVisits = { id in
-        .fireAndForget { dependencies[id]?.manager.stopMonitoringVisits() }
-      }
-    #endif
-
-    #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
-      manager.startUpdatingHeading = { id in
-        .fireAndForget { dependencies[id]?.manager.startUpdatingHeading() }
-      }
-    #endif
-
-    #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
-      manager.stopUpdatingHeading = { id in
-        .fireAndForget { dependencies[id]?.manager.stopUpdatingHeading() }
-      }
-    #endif
-
-    manager.stopUpdatingLocation = { id in
-      .fireAndForget { dependencies[id]?.manager.stopUpdatingLocation() }
-    }
-
-    #if os(iOS) || targetEnvironment(macCatalyst)
-      manager.stopMonitoringSignificantLocationChanges = { id in
-        .fireAndForget { dependencies[id]?.manager.stopMonitoringSignificantLocationChanges() }
-      }
-    #endif
-
-    return manager
-  }()
+  )
 }
 
 private struct Dependencies {
