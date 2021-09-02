@@ -2,12 +2,20 @@
 
 #if DEBUG
   extension LocationManager {
-    @available(*, deprecated, message: "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'")
+    @available(
+      *, deprecated,
+      message:
+        "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'"
+    )
     public func create(id: AnyHashable) -> Effect<Action, Never> {
       self.delegate().cancellable(id: id)
     }
 
-    @available(*, deprecated, message: "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'")
+    @available(
+      *, deprecated,
+      message:
+        "Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'"
+    )
     public func destroy(id: AnyHashable) -> Effect<Never, Never> {
       .cancel(id: id)
     }

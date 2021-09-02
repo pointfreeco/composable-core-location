@@ -139,7 +139,8 @@ extension LocationManager {
             }
           #endif
           #if os(iOS) || targetEnvironment(macCatalyst)
-            if let pausesLocationUpdatesAutomatically = properties.pausesLocationUpdatesAutomatically
+            if let pausesLocationUpdatesAutomatically = properties
+              .pausesLocationUpdatesAutomatically
             {
               manager.pausesLocationUpdatesAutomatically = pausesLocationUpdatesAutomatically
             }
