@@ -19,6 +19,17 @@ extension LocationManager {
   public static var live: Self {
     let manager = CLLocationManager()
 
+    let delegate = Effect<Action, Never>.run { subscriber in
+      let delegate = LocationManagerDelegate(subscriber)
+      manager.delegate = delegate
+
+      return AnyCancellable {
+        _ = delegate
+      }
+    }
+    .share()
+    .eraseToEffect()
+
     return Self(
       accuracyAuthorization: {
         #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
@@ -29,18 +40,7 @@ extension LocationManager {
         return nil
       },
       authorizationStatus: CLLocationManager.authorizationStatus,
-      delegate: {
-        Effect.run { subscriber in
-          let delegate = LocationManagerDelegate(subscriber: subscriber)
-          manager.delegate = delegate
-
-          return AnyCancellable {
-            _ = delegate
-          }
-        }
-        .share()
-        .eraseToEffect()
-      },
+      delegate: { delegate },
       dismissHeadingCalibrationDisplay: {
         .fireAndForget {
           #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
@@ -233,7 +233,7 @@ extension LocationManager {
 private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
   let subscriber: Effect<LocationManager.Action, Never>.Subscriber
 
-  init(subscriber: Effect<LocationManager.Action, Never>.Subscriber) {
+  init(_ subscriber: Effect<LocationManager.Action, Never>.Subscriber) {
     self.subscriber = subscriber
   }
 
