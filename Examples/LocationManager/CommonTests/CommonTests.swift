@@ -27,18 +27,18 @@ class LocationManagerTests: XCTestCase {
     let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
 
     store.environment.locationManager.authorizationStatus = { .notDetermined }
-    store.environment.locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
+    store.environment.locationManager.delegate = { locationManagerSubject.eraseToEffect() }
     store.environment.locationManager.locationServicesEnabled = { true }
-    store.environment.locationManager.requestLocation = { _ in
+    store.environment.locationManager.requestLocation = {
       .fireAndForget { didRequestLocation = true }
     }
 
     #if os(iOS)
-      store.environment.locationManager.requestWhenInUseAuthorization = { _ in
+      store.environment.locationManager.requestWhenInUseAuthorization = {
         .fireAndForget { didRequestInUseAuthorization = true }
       }
     #elseif os(macOS)
-      store.environment.locationManager.requestAlwaysAuthorization = { _ in
+      store.environment.locationManager.requestAlwaysAuthorization = {
         .fireAndForget { didRequestInUseAuthorization = true }
       }
     #endif
@@ -93,15 +93,15 @@ class LocationManagerTests: XCTestCase {
     let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
 
     store.environment.locationManager.authorizationStatus = { .notDetermined }
-    store.environment.locationManager.create = { _ in locationManagerSubject.eraseToEffect() }
+    store.environment.locationManager.delegate = { locationManagerSubject.eraseToEffect() }
     store.environment.locationManager.locationServicesEnabled = { true }
 
     #if os(iOS)
-      store.environment.locationManager.requestWhenInUseAuthorization = { _ in
+      store.environment.locationManager.requestWhenInUseAuthorization = {
         .fireAndForget { didRequestInUseAuthorization = true }
       }
     #elseif os(macOS)
-      store.environment.locationManager.requestAlwaysAuthorization = { _ in
+      store.environment.locationManager.requestAlwaysAuthorization = {
         .fireAndForget { didRequestInUseAuthorization = true }
       }
     #endif
