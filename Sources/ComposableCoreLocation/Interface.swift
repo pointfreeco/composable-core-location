@@ -302,8 +302,9 @@ public struct LocationManager {
   @available(macOS, unavailable)
   public var requestWhenInUseAuthorization: (AnyHashable) -> Effect<Never, Never>
 
-  public var requestTemporaryFullAccuracyAuthorization: (AnyHashable, String)
-  -> Effect<Never, Never>
+  public var requestTemporaryFullAccuracyAuthorization:
+    (AnyHashable, String)
+      -> Effect<Never, Never>
 
   public var set: (AnyHashable, Properties) -> Effect<Never, Never>
 
