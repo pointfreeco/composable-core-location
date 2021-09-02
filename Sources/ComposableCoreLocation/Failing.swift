@@ -1,5 +1,5 @@
-import CoreLocation
 import ComposableArchitecture
+import CoreLocation
 import XCTestDynamicOverlay
 
 extension LocationManager {
