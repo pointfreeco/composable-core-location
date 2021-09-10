@@ -2,6 +2,7 @@ import ComposableArchitecture
 import CoreLocation
 import XCTestDynamicOverlay
 
+#if DEBUG
 extension LocationManager {
   /// The failing implementation of the ``LocationManager`` interface. By default this
   /// implementation stubs all of its endpoints as functions that immediately call `XCTFail`.
@@ -107,3 +108,4 @@ extension LocationManager {
     stopUpdatingLocation: { .failing("LocationManager.stopUpdatingLocation") }
   )
 }
+#endif
