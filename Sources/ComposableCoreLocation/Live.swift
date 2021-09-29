@@ -103,14 +103,19 @@ extension LocationManager {
         }
       },
       requestTemporaryFullAccuracyAuthorization: { purposeKey in
-        .fireAndForget {
-          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-              manager
-                .requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey)
-            }
-          #endif
-        }
+          Effect.future { callback in
+            #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+              if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
+                  manager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey) { error in
+                      if let error = error {
+                          callback(.failure(LocationManager.Error(error)))
+                      } else {
+                          callback(.success(manager.accuracyAuthorization))
+                      }
+                  }
+              }
+            #endif
+          }
       },
       set: { properties in
         .fireAndForget {

@@ -297,7 +297,7 @@ public struct LocationManager {
 
   public var requestTemporaryFullAccuracyAuthorization:
     (String)
-      -> Effect<Never, Never>
+      -> Effect<CLAccuracyAuthorization, Error>
 
   public var set: (Properties) -> Effect<Never, Never>
 
