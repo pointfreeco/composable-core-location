@@ -18,10 +18,12 @@ test:
 	xcodebuild \
 		-scheme ComposableCoreLocation_watchOS \
 		-destination platform="$(PLATFORM_WATCHOS)"
-	xcodebuild test \
+	cd Examples/LocationManager \
+		&& xcodebuild test \
 		-scheme LocationManagerDesktop \
 		-destination platform="$(PLATFORM_MACOS)"
-	xcodebuild test \
+	cd Examples/LocationManager \
+		&& xcodebuild test \
 		-scheme LocationManagerMobile \
 		-destination platform="$(PLATFORM_IOS)"
 
