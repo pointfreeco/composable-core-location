@@ -110,7 +110,8 @@ extension LocationManager {
                       if let error = error {
                           callback(.failure(LocationManager.Error(error)))
                       } else {
-                          callback(.success(manager.accuracyAuthorization))
+                          let accuracy = AccuracyAuthorization(manager.accuracyAuthorization)
+                          callback(.success(accuracy))
                       }
                   }
               }
