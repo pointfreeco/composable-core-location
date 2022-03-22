@@ -103,7 +103,7 @@ extension LocationManager {
         }
       },
       requestTemporaryFullAccuracyAuthorization: { purposeKey in
-        Effect.run { subscriber in
+        .run { subscriber in
           #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
             if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
               manager.requestTemporaryFullAccuracyAuthorization(
