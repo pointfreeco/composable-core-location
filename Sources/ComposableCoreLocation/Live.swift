@@ -103,20 +103,22 @@ extension LocationManager {
         }
       },
       requestTemporaryFullAccuracyAuthorization: { purposeKey in
-          Effect.future { callback in
-            #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-              if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-                  manager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey) { error in
-                      if let error = error {
-                          callback(.failure(LocationManager.Error(error)))
-                      } else {
-                          let accuracy = AccuracyAuthorization(manager.accuracyAuthorization)
-                          callback(.success(accuracy))
-                      }
-                  }
+        Effect.run { subscriber in
+          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
+              manager.requestTemporaryFullAccuracyAuthorization(
+                withPurposeKey: purposeKey
+              ) { error in
+                subscriber.send(completion: error.map { .failure(.init($0)) } ?? .finished)
               }
-            #endif
-          }
+            } else {
+              subscriber.send(completion: .finished)
+            }
+          #else
+            subscriber.send(completion: .finished)
+          #endif
+          return AnyCancellable {}
+        }
       },
       set: { properties in
         .fireAndForget {
