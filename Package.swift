@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "composable-core-location",
   platforms: [
-    .iOS(.v14),
+    .iOS(.v13),
     .macOS(.v10_15),
     .tvOS(.v13),
     .watchOS(.v6),
