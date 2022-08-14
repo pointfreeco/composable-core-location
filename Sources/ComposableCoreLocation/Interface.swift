@@ -257,9 +257,11 @@ public struct LocationManager {
 
   public var authorizationStatus: () -> CLAuthorizationStatus
 
-  public var delegate: () -> EffectPublisher<Action, Never>
+  public var delegate: @Sendable () -> AsyncStream<Action>
 
-  public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  public var dismissHeadingCalibrationDisplay: @Sendable () async -> Void
 
   public var heading: () -> Heading?
 
@@ -275,40 +277,63 @@ public struct LocationManager {
 
   public var monitoredRegions: () -> Set<Region>
 
-  public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  public var requestAlwaysAuthorization: @Sendable () async -> Void
 
-  public var requestLocation: () -> EffectPublisher<Never, Never>
+  public var requestLocation: @Sendable () async -> Void
 
-  public var requestWhenInUseAuthorization: () -> EffectPublisher<Never, Never>
+  public var requestWhenInUseAuthorization: @Sendable () async -> Void
 
-  public var requestTemporaryFullAccuracyAuthorization: (String) -> EffectPublisher<Never, Error>
+  public var requestTemporaryFullAccuracyAuthorization: @Sendable (String) async throws -> Void
 
-  public var set: (Properties) -> EffectPublisher<Never, Never>
+  public var set: @Sendable (Properties) async -> Void
 
   public var significantLocationChangeMonitoringAvailable: () -> Bool
 
-  public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var startMonitoringForRegion: @Sendable (Region) async -> Void
 
-  public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var startMonitoringSignificantLocationChanges: @Sendable () async -> Void
 
-  public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var startMonitoringVisits: @Sendable () async -> Void
 
-  public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  public var startUpdatingHeading: @Sendable () async -> Void
 
-  public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  public var startUpdatingLocation: @Sendable () async -> Void
 
-  public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var stopMonitoringForRegion: @Sendable (Region) async -> Void
 
-  public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var stopMonitoringSignificantLocationChanges: @Sendable () async -> Void
 
-  public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var stopMonitoringVisits: @Sendable () async -> Void
 
-  public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  public var stopUpdatingHeading: @Sendable () async -> Void
 
-  public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
+  public var stopUpdatingLocation: @Sendable () async -> Void
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
-  public func set(
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  @Sendable public func set(
     activityType: CLActivityType? = nil,
     allowsBackgroundLocationUpdates: Bool? = nil,
     desiredAccuracy: CLLocationAccuracy? = nil,
@@ -317,21 +342,17 @@ public struct LocationManager {
     headingOrientation: CLDeviceOrientation? = nil,
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
-  ) -> EffectPublisher<Never, Never> {
-    #if os(macOS) || os(tvOS) || os(watchOS)
-      return .none
-    #else
-      return self.set(
-        Properties(
-          activityType: activityType,
-          allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
-          desiredAccuracy: desiredAccuracy,
-          distanceFilter: distanceFilter,
-          headingFilter: headingFilter,
-          headingOrientation: headingOrientation,
-          pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
-          showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
-        )
+  ) async {
+    await self.set(
+      Properties(
+        activityType: activityType,
+        allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
+        desiredAccuracy: desiredAccuracy,
+        distanceFilter: distanceFilter,
+        headingFilter: headingFilter,
+        headingOrientation: headingOrientation,
+        pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
+        showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
       )
     #endif
   }
