@@ -244,12 +244,12 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didUpdateTo newLocation: CLLocation,
       from oldLocation: CLLocation
     ) {
-      self.subscriber.send(
-        .didUpdateTo(
-          newLocation: Location(rawValue: newLocation),
-          oldLocation: Location(rawValue: oldLocation)
+        self.continuation.yield(
+            .didUpdateTo(
+              newLocation: Location(rawValue: newLocation),
+              oldLocation: Location(rawValue: oldLocation)
+            )
         )
-      )
     }
   #endif
 
