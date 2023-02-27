@@ -1,5 +1,4 @@
 import Combine
-import ComposableArchitecture
 import CoreLocation
 
 /// A wrapper around Core Location's `CLLocationManager` that exposes its functionality through
