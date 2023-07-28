@@ -257,11 +257,11 @@ public struct LocationManager {
 
   public var authorizationStatus: () -> CLAuthorizationStatus
 
-  public var delegate: () -> Effect<Action, Never>
+  public var delegate: () -> EffectPublisher<Action, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var dismissHeadingCalibrationDisplay: () -> Effect<Never, Never>
+  public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
@@ -288,15 +288,15 @@ public struct LocationManager {
   public var monitoredRegions: () -> Set<Region>
 
   @available(tvOS, unavailable)
-  public var requestAlwaysAuthorization: () -> Effect<Never, Never>
+  public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
 
-  public var requestLocation: () -> Effect<Never, Never>
+  public var requestLocation: () -> EffectPublisher<Never, Never>
 
-  public var requestWhenInUseAuthorization: () -> Effect<Never, Never>
+  public var requestWhenInUseAuthorization: () -> EffectPublisher<Never, Never>
 
-  public var requestTemporaryFullAccuracyAuthorization: (String) -> Effect<Never, Error>
+  public var requestTemporaryFullAccuracyAuthorization: (String) -> EffectPublisher<Never, Error>
 
-  public var set: (Properties) -> Effect<Never, Never>
+  public var set: (Properties) -> EffectPublisher<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
@@ -304,42 +304,42 @@ public struct LocationManager {
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringForRegion: (Region) -> Effect<Never, Never>
+  public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringSignificantLocationChanges: () -> Effect<Never, Never>
+  public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var startMonitoringVisits: () -> Effect<Never, Never>
+  public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var startUpdatingHeading: () -> Effect<Never, Never>
+  public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
 
   @available(tvOS, unavailable)
-  public var startUpdatingLocation: () -> Effect<Never, Never>
-
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
-  public var stopMonitoringForRegion: (Region) -> Effect<Never, Never>
+  public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var stopMonitoringSignificantLocationChanges: () -> Effect<Never, Never>
+  public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
-  public var stopMonitoringVisits: () -> Effect<Never, Never>
+  public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
-  public var stopUpdatingHeading: () -> Effect<Never, Never>
+  public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
 
-  public var stopUpdatingLocation: () -> Effect<Never, Never>
+  public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
   @available(macOS, unavailable)
@@ -354,7 +354,7 @@ public struct LocationManager {
     headingOrientation: CLDeviceOrientation? = nil,
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
-  ) -> Effect<Never, Never> {
+  ) -> EffectPublisher<Never, Never> {
     self.set(
       Properties(
         activityType: activityType,
