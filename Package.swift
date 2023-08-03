@@ -17,7 +17,7 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "0.1.2")
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.0.0")
   ],
   targets: [
     .target(
