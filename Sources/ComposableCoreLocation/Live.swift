@@ -1,5 +1,4 @@
 import Combine
-import ComposableArchitecture
 import CoreLocation
 
 extension LocationManager {
@@ -19,16 +18,8 @@ extension LocationManager {
   public static var live: Self {
     let manager = CLLocationManager()
 
-    let delegate = EffectPublisher<Action, Never>.run { subscriber in
-      let delegate = LocationManagerDelegate(subscriber)
-      manager.delegate = delegate
-
-      return AnyCancellable {
-        _ = delegate
-      }
-    }
-    .share()
-    .eraseToEffect()
+    let delegate = LocationManagerDelegate()
+    manager.delegate = delegate
 
     return Self(
       accuracyAuthorization: {
@@ -47,7 +38,9 @@ extension LocationManager {
         #endif
         return CLLocationManager.authorizationStatus()
       },
-      delegate: { delegate },
+      delegate: {
+        delegate.subject.eraseToAnyPublisher()
+      },
       dismissHeadingCalibrationDisplay: {
         .fireAndForget {
           #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
@@ -110,22 +103,23 @@ extension LocationManager {
         }
       },
       requestTemporaryFullAccuracyAuthorization: { purposeKey in
-        .run { subscriber in
-          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-              manager.requestTemporaryFullAccuracyAuthorization(
-                withPurposeKey: purposeKey
-              ) { error in
-                subscriber.send(completion: error.map { .failure(.init($0)) } ?? .finished)
-              }
-            } else {
-              subscriber.send(completion: .finished)
+        let subject = PassthroughSubject<Never, Error>()
+        
+        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+        if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0,macCatalyst 14.0, *) {
+            manager.requestTemporaryFullAccuracyAuthorization(
+            withPurposeKey: purposeKey
+            ) { error in
+            subject.send(completion: error.map { .failure(.init($0)) } ?? .finished)
             }
-          #else
-            subscriber.send(completion: .finished)
-          #endif
-          return AnyCancellable {}
+        } else {
+            subject.send(completion: .finished)
         }
+        #else
+        subject.send(completion: .finished)
+        #endif
+          
+        return subject.eraseToAnyPublisher()
       },
       set: { properties in
         .fireAndForget {
@@ -247,24 +241,20 @@ extension LocationManager {
 }
 
 private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
-  let subscriber: EffectPublisher<LocationManager.Action, Never>.Subscriber
-
-  init(_ subscriber: EffectPublisher<LocationManager.Action, Never>.Subscriber) {
-    self.subscriber = subscriber
-  }
+  let subject = PassthroughSubject<LocationManager.Action, Never>()
 
   func locationManager(
     _ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus
   ) {
-    self.subscriber.send(.didChangeAuthorization(status))
+    self.subject.send(.didChangeAuthorization(status))
   }
 
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    self.subscriber.send(.didFailWithError(LocationManager.Error(error)))
+    self.subject.send(.didFailWithError(LocationManager.Error(error)))
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    self.subscriber.send(.didUpdateLocations(locations.map(Location.init(rawValue:))))
+    self.subject.send(.didUpdateLocations(locations.map(Location.init(rawValue:))))
   }
 
   #if os(macOS)
@@ -272,7 +262,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didUpdateTo newLocation: CLLocation,
       from oldLocation: CLLocation
     ) {
-      self.subscriber.send(
+      self.subject.send(
         .didUpdateTo(
           newLocation: Location(rawValue: newLocation),
           oldLocation: Location(rawValue: oldLocation)
@@ -285,7 +275,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?
     ) {
-      self.subscriber.send(
+      self.subject.send(
         .didFinishDeferredUpdatesWithError(error.map(LocationManager.Error.init))
       )
     }
@@ -311,13 +301,13 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-      self.subscriber.send(.didEnterRegion(Region(rawValue: region)))
+      self.subject.send(.didEnterRegion(Region(rawValue: region)))
     }
   #endif
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-      self.subscriber.send(.didExitRegion(Region(rawValue: region)))
+      self.subject.send(.didExitRegion(Region(rawValue: region)))
     }
   #endif
 
@@ -325,7 +315,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion
     ) {
-      self.subscriber.send(.didDetermineState(state, region: Region(rawValue: region)))
+      self.subject.send(.didDetermineState(state, region: Region(rawValue: region)))
     }
   #endif
 
@@ -333,7 +323,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error
     ) {
-      self.subscriber.send(
+      self.subject.send(
         .monitoringDidFail(
           region: region.map(Region.init(rawValue:)), error: LocationManager.Error(error)))
     }
@@ -341,7 +331,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-      self.subscriber.send(.didStartMonitoring(region: Region(rawValue: region)))
+      self.subject.send(.didStartMonitoring(region: Region(rawValue: region)))
     }
   #endif
 
