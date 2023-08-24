@@ -75,7 +75,7 @@ public struct AppEnvironment {
 private struct LocationManagerId: Hashable {}
 private struct CancelSearchId: Hashable {}
 
-public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
+public let appReducer = AnyReducer<AppState, AppAction, AppEnvironment> { state, action, environment in
   switch action {
   case let .categoryButtonTapped(category):
     guard category != state.pointOfInterestCategory else {
@@ -188,7 +188,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, ac
 .signpost()
 .debug()
 
-private let locationManagerReducer = Reducer<AppState, LocationManager.Action, AppEnvironment> {
+private let locationManagerReducer = AnyReducer<AppState, LocationManager.Action, AppEnvironment> {
   state, action, environment in
 
   switch action {

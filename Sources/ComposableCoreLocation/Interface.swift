@@ -259,35 +259,22 @@ public struct LocationManager {
 
   public var delegate: () -> EffectPublisher<Action, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
   public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
   public var heading: () -> Heading?
 
-  @available(tvOS, unavailable)
   public var headingAvailable: () -> Bool
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var isRangingAvailable: () -> Bool
 
   public var location: () -> Location?
 
   public var locationServicesEnabled: () -> Bool
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var maximumRegionMonitoringDistance: () -> CLLocationDistance
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var monitoredRegions: () -> Set<Region>
 
-  @available(tvOS, unavailable)
   public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
 
   public var requestLocation: () -> EffectPublisher<Never, Never>
@@ -298,53 +285,29 @@ public struct LocationManager {
 
   public var set: (Properties) -> EffectPublisher<Never, Never>
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var significantLocationChangeMonitoringAvailable: () -> Bool
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
   public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
 
-  @available(tvOS, unavailable)
   public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
 
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
 
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
   public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
 
   public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
-  @available(macOS, unavailable)
-  @available(tvOS, unavailable)
-  @available(watchOS, unavailable)
   public func set(
     activityType: CLActivityType? = nil,
     allowsBackgroundLocationUpdates: Bool? = nil,
@@ -355,51 +318,41 @@ public struct LocationManager {
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
   ) -> EffectPublisher<Never, Never> {
-    self.set(
-      Properties(
-        activityType: activityType,
-        allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
-        desiredAccuracy: desiredAccuracy,
-        distanceFilter: distanceFilter,
-        headingFilter: headingFilter,
-        headingOrientation: headingOrientation,
-        pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
-        showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
+#if os(macOS)
+      return .none
+#else
+      return self.set(
+        Properties(
+            activityType: activityType,
+            allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
+            desiredAccuracy: desiredAccuracy,
+            distanceFilter: distanceFilter,
+            headingFilter: headingFilter,
+            headingOrientation: headingOrientation,
+            pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
+            showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
+        )
       )
-    )
+#endif
   }
 }
 
 extension LocationManager {
   public struct Properties: Equatable {
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
     var activityType: CLActivityType? = nil
 
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
     var allowsBackgroundLocationUpdates: Bool? = nil
 
     var desiredAccuracy: CLLocationAccuracy? = nil
 
     var distanceFilter: CLLocationDistance? = nil
 
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
     var headingFilter: CLLocationDegrees? = nil
 
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
     var headingOrientation: CLDeviceOrientation? = nil
 
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
-    @available(watchOS, unavailable)
     var pausesLocationUpdatesAutomatically: Bool? = nil
 
-    @available(macOS, unavailable)
-    @available(tvOS, unavailable)
-    @available(watchOS, unavailable)
     var showsBackgroundLocationIndicator: Bool? = nil
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
