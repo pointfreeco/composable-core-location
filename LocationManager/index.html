@@ -282,7 +282,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.delegate">delegate</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">delegate</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">delegate</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.dismissheadingcalibrationdisplay">
@@ -290,9 +290,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.dismissheadingcalibrationdisplay">dismiss​Heading​Calibration​Display</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">dismissHeadingCalibrationDisplay</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">dismissHeadingCalibrationDisplay</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.heading">
@@ -300,9 +298,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.heading">heading</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">heading</span>: () -&gt; <a href="/composable-core-location/Heading"><span class="type">Heading</span></a>? </body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">heading</span>: () -&gt; <a href="/composable-core-location/Heading"><span class="type">Heading</span></a>? </body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.headingavailable">
@@ -310,8 +306,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.headingavailable">heading​Available</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">headingAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">headingAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.israngingavailable">
@@ -319,10 +314,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.israngingavailable">is​Ranging​Available</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isRangingAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">isRangingAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.location">
@@ -346,9 +338,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.maximumregionmonitoringdistance">maximum​Region​Monitoring​Distance</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">maximumRegionMonitoringDistance</span>: () -&gt; <span class="type">CLLocationDistance</span></body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">maximumRegionMonitoringDistance</span>: () -&gt; <span class="type">CLLocationDistance</span></body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.monitoredregions">
@@ -356,9 +346,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.monitoredregions">monitored​Regions</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">monitoredRegions</span>: () -&gt; <span class="type">Set</span>&lt;<a href="/composable-core-location/Region"><span class="type">Region</span></a>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">monitoredRegions</span>: () -&gt; <span class="type">Set</span>&lt;<a href="/composable-core-location/Region"><span class="type">Region</span></a>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.requestalwaysauthorization">
@@ -366,8 +354,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.requestalwaysauthorization">request​Always​Authorization</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestAlwaysAuthorization</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestAlwaysAuthorization</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.requestlocation">
@@ -375,7 +362,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.requestlocation">request​Location</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestLocation</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestLocation</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.requestwheninuseauthorization">
@@ -383,7 +370,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.requestwheninuseauthorization">request​When​InUse​Authorization</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestWhenInUseAuthorization</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestWhenInUseAuthorization</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.requesttemporaryfullaccuracyauthorization">
@@ -391,7 +378,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.requesttemporaryfullaccuracyauthorization">request​Temporary​Full​Accuracy​Authorization</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestTemporaryFullAccuracyAuthorization</span>: (<span class="type">String</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Error</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">requestTemporaryFullAccuracyAuthorization</span>: (<span class="type">String</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Error</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.set">
@@ -399,7 +386,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.set">set</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">set</span>: (<span class="type">Properties</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">set</span>: (<span class="type">Properties</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.significantlocationchangemonitoringavailable">
@@ -407,9 +394,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.significantlocationchangemonitoringavailable">significant​Location​Change​Monitoring​Available</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">significantLocationChangeMonitoringAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">significantLocationChangeMonitoringAvailable</span>: () -&gt; <span class="type">Bool</span></body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.startmonitoringforregion">
@@ -417,9 +402,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.startmonitoringforregion">start​Monitoring​For​Region</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringForRegion</span>: (<a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringForRegion</span>: (<a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.startmonitoringsignificantlocationchanges">
@@ -427,9 +410,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.startmonitoringsignificantlocationchanges">start​Monitoring​Significant​Location​Changes</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringSignificantLocationChanges</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringSignificantLocationChanges</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.startmonitoringvisits">
@@ -437,10 +418,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.startmonitoringvisits">start​Monitoring​Visits</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringVisits</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startMonitoringVisits</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.startupdatingheading">
@@ -448,9 +426,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.startupdatingheading">start​Updating​Heading</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startUpdatingHeading</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startUpdatingHeading</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.startupdatinglocation">
@@ -458,8 +434,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.startupdatinglocation">start​Updating​Location</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startUpdatingLocation</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">startUpdatingLocation</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.stopmonitoringforregion">
@@ -467,9 +442,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.stopmonitoringforregion">stop​Monitoring​For​Region</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringForRegion</span>: (<a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringForRegion</span>: (<a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.stopmonitoringsignificantlocationchanges">
@@ -477,9 +450,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.stopmonitoringsignificantlocationchanges">stop​Monitoring​Significant​Location​Changes</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringSignificantLocationChanges</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringSignificantLocationChanges</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.stopmonitoringvisits">
@@ -487,10 +458,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.stopmonitoringvisits">stop​Monitoring​Visits</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringVisits</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopMonitoringVisits</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.stopupdatingheading">
@@ -498,9 +466,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.stopupdatingheading">stop​Updating​Heading</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopUpdatingHeading</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopUpdatingHeading</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.stopupdatinglocation">
@@ -508,7 +474,7 @@ with a mock location we can do something like this:</p>
         <code><a href="#locationmanager.stopupdatinglocation">stop​Updating​Location</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopUpdatingLocation</span>: () -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">var</span> <span class="variable">stopUpdatingLocation</span>: () -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;</body></html></code></pre>
 </div>
 </div>
 <div role="article" class="variable" id="locationmanager.live">
@@ -544,10 +510,7 @@ its methods. You will typically use this when building for the simulator or devi
         <code><a href="#locationmanager.set(activitytype:allowsbackgroundlocationupdates:desiredaccuracy:distancefilter:headingfilter:headingorientation:pauseslocationupdatesautomatically:showsbackgroundlocationindicator:)">set(activity​Type:​allows​Background​Location​Updates:​desired​Accuracy:​distance​Filter:​heading​Filter:​heading​Orientation:​pauses​Location​Updates​Automatically:​shows​Background​Location​Indicator:​)</a></code>
     </h3>
     <div class="declaration">
-<pre class="highlight"><code><html><body><span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">macOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">tvOS</span>, <span class="variable">unavailable</span>)
-  <span class="attribute">@</span><span class="attribute">available</span>(<span class="variable">watchOS</span>, <span class="variable">unavailable</span>)
-  <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(
+<pre class="highlight"><code><html><body><span class="keyword">public</span> <span class="keyword">func</span> <span class="function">set</span>(
     <span class="variable">activityType</span>: <span class="type">CLActivityType</span>? = <span class="keyword">nil</span>,
     <span class="variable">allowsBackgroundLocationUpdates</span>: <span class="type">Bool</span>? = <span class="keyword">nil</span>,
     <span class="variable">desiredAccuracy</span>: <span class="type">CLLocationAccuracy</span>? = <span class="keyword">nil</span>,
@@ -556,7 +519,7 @@ its methods. You will typically use this when building for the simulator or devi
     <span class="variable">headingOrientation</span>: <span class="type">CLDeviceOrientation</span>? = <span class="keyword">nil</span>,
     <span class="variable">pausesLocationUpdatesAutomatically</span>: <span class="type">Bool</span>? = <span class="keyword">nil</span>,
     <span class="variable">showsBackgroundLocationIndicator</span>: <span class="type">Bool</span>? = <span class="keyword">nil</span>
-  ) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
+  ) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
 </div>
 <div class="summary" role="doc-abstract">
     <p>Updates the given properties of a uniquely identified <code>CLLocationManager</code>.</p>
@@ -573,7 +536,7 @@ its methods. You will typically use this when building for the simulator or devi
       <span class="variable">message</span>:
         <span class="string literal">"Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'"</span>
     )
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">create</span>(<span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">create</span>(<span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
 </div>
 </div>
 <div role="article" class="function" id="locationmanager.destroy(id:)">
@@ -586,7 +549,7 @@ its methods. You will typically use this when building for the simulator or devi
       <span class="variable">message</span>:
         <span class="string literal">"Use 'Effect.cancellable' and 'Effect.cancel' to manage the lifecycle of 'LocationManager.delegate'"</span>
     )
-    <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">destroy</span>(<span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
+    <span class="keyword">public</span> <span class="keyword">func</span> <span class="function">destroy</span>(<span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt;  </body></html></code></pre>
 </div>
 </div>
 <div role="article" class="function" id="locationmanager.unimplemented(accuracyauthorization:authorizationstatus:create:destroy:dismissheadingcalibrationdisplay:heading:headingavailable:israngingavailable:location:locationservicesenabled:maximumregionmonitoringdistance:monitoredregions:requestalwaysauthorization:requestlocation:requestwheninuseauthorization:requesttemporaryfullaccuracyauthorization:set:significantlocationchangemonitoringavailable:startmonitoringsignificantlocationchanges:startmonitoringforregion:startmonitoringvisits:startupdatinglocation:stopmonitoringsignificantlocationchanges:stopmonitoringforregion:stopmonitoringvisits:startupdatingheading:stopupdatingheading:stopupdatinglocation:)">
@@ -602,11 +565,14 @@ its methods. You will typically use this when building for the simulator or devi
       <span class="variable">authorizationStatus</span>: <span class="attribute">@</span><span class="attribute">escaping</span> () -&gt; <span class="type">CLAuthorizationStatus</span> = {
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">authorizationStatus</span><span class="string literal">"</span>)
       },
-      <span class="variable">create</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="keyword">_</span> <span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">create</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="keyword">_</span> <span class="variable">id</span>: <span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Action</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">create</span><span class="string literal">"</span>)
       },
-      <span class="variable">destroy</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">destroy</span><span class="string literal">"</span>) },
-      <span class="variable">dismissHeadingCalibrationDisplay</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">destroy</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+        <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">destroy</span><span class="string literal">"</span>)
+      },
+      <span class="variable">dismissHeadingCalibrationDisplay</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+        <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">dismissHeadingCalibrationDisplay</span><span class="string literal">"</span>)
       },
       <span class="variable">heading</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <a href="/composable-core-location/Heading"><span class="type">Heading</span></a>? = { <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">heading</span><span class="string literal">"</span>) },
@@ -620,54 +586,63 @@ its methods. You will typically use this when building for the simulator or devi
       <span class="variable">monitoredRegions</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Set</span>&lt;<a href="/composable-core-location/Region"><span class="type">Region</span></a>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">monitoredRegions</span><span class="string literal">"</span>)
       },
-      <span class="variable">requestAlwaysAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">requestAlwaysAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">requestAlwaysAuthorization</span><span class="string literal">"</span>)
       },
-      <span class="variable">requestLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">requestLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">requestLocation</span><span class="string literal">"</span>)
       },
-      <span class="variable">requestWhenInUseAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">requestWhenInUseAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+        <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">requestWhenInUseAuthorization</span><span class="string literal">"</span>)
       },
-      <span class="variable">requestTemporaryFullAccuracyAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <span class="type">String</span>) -&gt; <span class="type">Effect</span>&lt;
+      <span class="variable">requestTemporaryFullAccuracyAuthorization</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <span class="type">String</span>) -&gt; <span class="type">EffectPublisher</span>&lt;
         <span class="type">Never</span>, <span class="type">Never</span>
       &gt; = { <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">requestTemporaryFullAccuracyAuthorization</span><span class="string literal">"</span>)
       },
-      <span class="variable">set</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="keyword">_</span> <span class="variable">id</span>: <span class="type">AnyHashable</span>, <span class="keyword">_</span> <span class="variable">properties</span>: <span class="type">Properties</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+      <span class="variable">set</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="keyword">_</span> <span class="variable">id</span>: <span class="type">AnyHashable</span>, <span class="keyword">_</span> <span class="variable">properties</span>: <span class="type">Properties</span>) -&gt; <span class="type">EffectPublisher</span>&lt;
+        <span class="type">Never</span>, <span class="type">Never</span>
+      &gt; = {
         <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">set</span><span class="string literal">"</span>)
       },
       <span class="variable">significantLocationChangeMonitoringAvailable</span>: <span class="attribute">@</span><span class="attribute">escaping</span> () -&gt; <span class="type">Bool</span> = {
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">significantLocationChangeMonitoringAvailable</span><span class="string literal">"</span>)
       },
-      <span class="variable">startMonitoringSignificantLocationChanges</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+      <span class="variable">startMonitoringSignificantLocationChanges</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;
+        <span class="type">Never</span>, <span class="type">Never</span>
+      &gt; = {
         <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">startMonitoringSignificantLocationChanges</span><span class="string literal">"</span>)
       },
-      <span class="variable">startMonitoringForRegion</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">startMonitoringForRegion</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+        <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">startMonitoringForRegion</span><span class="string literal">"</span>)
       },
-      <span class="variable">startMonitoringVisits</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">startMonitoringVisits</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">startMonitoringVisits</span><span class="string literal">"</span>)
       },
-      <span class="variable">startUpdatingLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">startUpdatingLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">startUpdatingLocation</span><span class="string literal">"</span>)
       },
-      <span class="variable">stopMonitoringSignificantLocationChanges</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+      <span class="variable">stopMonitoringSignificantLocationChanges</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;
+        <span class="type">Never</span>, <span class="type">Never</span>
+      &gt; = {
         <span class="keyword">_</span> <span class="keyword">in</span> <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">stopMonitoringSignificantLocationChanges</span><span class="string literal">"</span>)
       },
-      <span class="variable">stopMonitoringForRegion</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">stopMonitoringForRegion</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>, <a href="/composable-core-location/Region"><span class="type">Region</span></a>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = {
+        <span class="keyword">_</span>, <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">stopMonitoringForRegion</span><span class="string literal">"</span>)
       },
-      <span class="variable">stopMonitoringVisits</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">stopMonitoringVisits</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">stopMonitoringVisits</span><span class="string literal">"</span>)
       },
-      <span class="variable">startUpdatingHeading</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">startUpdatingHeading</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">startUpdatingHeading</span><span class="string literal">"</span>)
       },
-      <span class="variable">stopUpdatingHeading</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">stopUpdatingHeading</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">stopUpdatingHeading</span><span class="string literal">"</span>)
       },
-      <span class="variable">stopUpdatingLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">Effect</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
+      <span class="variable">stopUpdatingLocation</span>: <span class="attribute">@</span><span class="attribute">escaping</span> (<span class="type">AnyHashable</span>) -&gt; <span class="type">EffectPublisher</span>&lt;<span class="type">Never</span>, <span class="type">Never</span>&gt; = { <span class="keyword">_</span> <span class="keyword">in</span>
         <span class="variable">_unimplemented</span>(<span class="string literal">"</span><span class="string literal">stopUpdatingLocation</span><span class="string literal">"</span>)
       }
     ) -&gt; <span class="keyword">Self</span>  </body></html></code></pre>
@@ -682,7 +657,7 @@ its methods. You will typically use this when building for the simulator or devi
 
     <footer>
         <p>
-    Generated on <time datetime="2022-03-22T16:24:31+0000">March 22, 2022</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
+    Generated on <time datetime="2023-08-24T16:05:33+0000">August 24, 2023</time> using <a href="https://github.com/SwiftDocOrg/swift-doc">swift-doc</a> <span class="version">1.0.0-rc.1</span>.
 </p>
     </footer>
 </body>
