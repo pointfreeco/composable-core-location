@@ -19,7 +19,7 @@ extension LocationManager {
   public static var live: Self {
     let manager = CLLocationManager()
 
-    let delegate = Effect<Action, Never>.run { subscriber in
+    let delegate = EffectPublisher<Action, Never>.run { subscriber in
       let delegate = LocationManagerDelegate(subscriber)
       manager.delegate = delegate
 
@@ -247,9 +247,9 @@ extension LocationManager {
 }
 
 private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
-  let subscriber: Effect<LocationManager.Action, Never>.Subscriber
+  let subscriber: EffectPublisher<LocationManager.Action, Never>.Subscriber
 
-  init(_ subscriber: Effect<LocationManager.Action, Never>.Subscriber) {
+  init(_ subscriber: EffectPublisher<LocationManager.Action, Never>.Subscriber) {
     self.subscriber = subscriber
   }
 

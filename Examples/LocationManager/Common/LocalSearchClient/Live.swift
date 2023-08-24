@@ -5,7 +5,7 @@ import MapKit
 extension LocalSearchClient {
   public static let live = LocalSearchClient(
     search: { request in
-      Effect.future { callback in
+      EffectPublisher.future { callback in
         MKLocalSearch(request: request).start { response, error in
           switch (response, error) {
           case let (.some(response), _):
