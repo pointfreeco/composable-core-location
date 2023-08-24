@@ -318,7 +318,7 @@ public struct LocationManager {
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
   ) -> EffectPublisher<Never, Never> {
-#if os(macOS)
+#if os(macOS) || os(tvOS) || os(watchOS)
       return .none
 #else
       return self.set(
