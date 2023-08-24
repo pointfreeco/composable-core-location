@@ -149,7 +149,7 @@ class LocationManagerTests: XCTestCase {
       mapItems: [mapItem]
     )
 
-    store.environment.localSearch.search = { _ in Effect(value: localSearchResponse) }
+    store.environment.localSearch.search = { _ in EffectPublisher(value: localSearchResponse) }
 
     store.send(.categoryButtonTapped(.cafe)) {
       $0.pointOfInterestCategory = .cafe
@@ -191,7 +191,7 @@ class LocationManagerTests: XCTestCase {
       mapItems: [mapItem]
     )
 
-    store.environment.localSearch.search = { _ in Effect(value: localSearchResponse) }
+    store.environment.localSearch.search = { _ in EffectPublisher(value: localSearchResponse) }
 
     let coordinateRegion = CoordinateRegion(
       center: CLLocationCoordinate2D(latitude: 10, longitude: 20),
