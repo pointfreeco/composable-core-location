@@ -31,8 +31,11 @@
       create: @escaping (_ id: AnyHashable) -> EffectPublisher<Action, Never> = { _ in
         _unimplemented("create")
       },
-      destroy: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in _unimplemented("destroy") },
-      dismissHeadingCalibrationDisplay: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
+      destroy: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
+        _unimplemented("destroy")
+      },
+      dismissHeadingCalibrationDisplay: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = {
+        _ in
         _unimplemented("dismissHeadingCalibrationDisplay")
       },
       heading: @escaping (AnyHashable) -> Heading? = { _ in _unimplemented("heading") },
@@ -52,7 +55,8 @@
       requestLocation: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
         _unimplemented("requestLocation")
       },
-      requestWhenInUseAuthorization: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
+      requestWhenInUseAuthorization: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = {
+        _ in
         _unimplemented("requestWhenInUseAuthorization")
       },
       requestTemporaryFullAccuracyAuthorization: @escaping (AnyHashable, String) -> EffectPublisher<
@@ -60,16 +64,21 @@
       > = { _, _ in
         _unimplemented("requestTemporaryFullAccuracyAuthorization")
       },
-      set: @escaping (_ id: AnyHashable, _ properties: Properties) -> EffectPublisher<Never, Never> = {
+      set: @escaping (_ id: AnyHashable, _ properties: Properties) -> EffectPublisher<
+        Never, Never
+      > = {
         _, _ in _unimplemented("set")
       },
       significantLocationChangeMonitoringAvailable: @escaping () -> Bool = {
         _unimplemented("significantLocationChangeMonitoringAvailable")
       },
-      startMonitoringSignificantLocationChanges: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = {
+      startMonitoringSignificantLocationChanges: @escaping (AnyHashable) -> EffectPublisher<
+        Never, Never
+      > = {
         _ in _unimplemented("startMonitoringSignificantLocationChanges")
       },
-      startMonitoringForRegion: @escaping (AnyHashable, Region) -> EffectPublisher<Never, Never> = { _, _ in
+      startMonitoringForRegion: @escaping (AnyHashable, Region) -> EffectPublisher<Never, Never> = {
+        _, _ in
         _unimplemented("startMonitoringForRegion")
       },
       startMonitoringVisits: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
@@ -78,10 +87,13 @@
       startUpdatingLocation: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in
         _unimplemented("startUpdatingLocation")
       },
-      stopMonitoringSignificantLocationChanges: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = {
+      stopMonitoringSignificantLocationChanges: @escaping (AnyHashable) -> EffectPublisher<
+        Never, Never
+      > = {
         _ in _unimplemented("stopMonitoringSignificantLocationChanges")
       },
-      stopMonitoringForRegion: @escaping (AnyHashable, Region) -> EffectPublisher<Never, Never> = { _, _ in
+      stopMonitoringForRegion: @escaping (AnyHashable, Region) -> EffectPublisher<Never, Never> = {
+        _, _ in
         _unimplemented("stopMonitoringForRegion")
       },
       stopMonitoringVisits: @escaping (AnyHashable) -> EffectPublisher<Never, Never> = { _ in

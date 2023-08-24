@@ -318,22 +318,22 @@ public struct LocationManager {
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
   ) -> EffectPublisher<Never, Never> {
-#if os(macOS) || os(tvOS) || os(watchOS)
+    #if os(macOS) || os(tvOS) || os(watchOS)
       return .none
-#else
+    #else
       return self.set(
         Properties(
-            activityType: activityType,
-            allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
-            desiredAccuracy: desiredAccuracy,
-            distanceFilter: distanceFilter,
-            headingFilter: headingFilter,
-            headingOrientation: headingOrientation,
-            pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
-            showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
+          activityType: activityType,
+          allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
+          desiredAccuracy: desiredAccuracy,
+          distanceFilter: distanceFilter,
+          headingFilter: headingFilter,
+          headingOrientation: headingOrientation,
+          pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
+          showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
         )
       )
-#endif
+    #endif
   }
 }
 
