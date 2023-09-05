@@ -177,11 +177,11 @@ import CoreLocation
 /// control, and even what happens when the request for their location fails. It is very easy to
 /// write these tests, and we can test deep, subtle properties of our application.
 ///
-public struct LocationManager {
+public struct LocationManager: Sendable {
   /// Actions that correspond to `CLLocationManagerDelegate` methods.
   ///
   /// See `CLLocationManagerDelegate` for more information.
-  public enum Action: Equatable {
+  public enum Action: Equatable, Sendable {
     case didChangeAuthorization(CLAuthorizationStatus)
 
     @available(tvOS, unavailable)
@@ -199,7 +199,7 @@ public struct LocationManager {
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
-    case didFailRanging(beaconConstraint: CLBeaconIdentityConstraint, error: Error)
+    case didFailRanging(beaconConstraint: BeaconConstraint, error: Error)
 
     case didFailWithError(Error)
 
@@ -241,7 +241,7 @@ public struct LocationManager {
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
-    case didRangeBeacons([Beacon], satisfyingConstraint: CLBeaconIdentityConstraint)
+    case didRangeBeacons([Beacon], satisfyingConstraint: BeaconConstraint)
   }
 
   public struct Error: Swift.Error, Equatable {

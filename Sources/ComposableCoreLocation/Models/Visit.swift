@@ -1,3 +1,4 @@
+import ConcurrencyExtras
 import CoreLocation
 
 /// A value type wrapper for `CLVisit`. This type is necessary so that we can do equality checks
@@ -6,8 +7,8 @@ import CoreLocation
 @available(macOS, unavailable)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-public struct Visit: Hashable {
-  public let rawValue: CLVisit?
+public struct Visit: Hashable, Sendable {
+  @UncheckedSendable public private(set) var rawValue: CLVisit?
 
   public var arrivalDate: Date
   public var coordinate: CLLocationCoordinate2D

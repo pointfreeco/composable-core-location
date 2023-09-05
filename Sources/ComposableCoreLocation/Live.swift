@@ -16,12 +16,11 @@ extension LocationManager {
   /// )
   /// ```
   public static var live: Self {
-    let task = Task<(manager: CLLocationManager, delegate: LocationManagerDelegate), Never> {
-      @MainActor in
+    let task = Task<LocationManagerSendableBox, Never> { @MainActor in
       let manager = CLLocationManager()
       let delegate = LocationManagerDelegate()
       manager.delegate = delegate
-      return (manager, delegate)
+      return .init(manager: manager, delegate: delegate)
     }
 
     return Self(
@@ -207,7 +206,12 @@ extension LocationManager {
   }
 }
 
-private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
+private struct LocationManagerSendableBox: Sendable {
+  @UncheckedSendable var manager: CLLocationManager
+  var delegate: LocationManagerDelegate
+}
+
+private final class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, Sendable {
   let continuations: ActorIsolated<[UUID: AsyncStream<LocationManager.Action>.Continuation]>
 
   override init() {
@@ -332,7 +336,8 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     ) {
       send(
         .didRangeBeacons(
-          beacons.map(Beacon.init(rawValue:)), satisfyingConstraint: beaconConstraint
+          beacons.map(Beacon.init(rawValue:)),
+          satisfyingConstraint: BeaconConstraint(rawValue: beaconConstraint)
         )
       )
     }
@@ -344,7 +349,9 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       error: Error
     ) {
       send(
-        .didFailRanging(beaconConstraint: beaconConstraint, error: LocationManager.Error(error))
+        .didFailRanging(
+          beaconConstraint: BeaconConstraint(rawValue: beaconConstraint),
+          error: LocationManager.Error(error))
       )
     }
   #endif
