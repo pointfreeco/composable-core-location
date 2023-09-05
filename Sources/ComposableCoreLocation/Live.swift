@@ -1,4 +1,4 @@
-import Combine
+import ConcurrencyExtras
 import CoreLocation
 
 extension LocationManager {
@@ -16,111 +16,101 @@ extension LocationManager {
   /// )
   /// ```
   public static var live: Self {
-    let manager = CLLocationManager()
+    let task = Task<(manager: CLLocationManager, delegate: LocationManagerDelegate), Never> {
+      @MainActor in
+      let manager = CLLocationManager()
+      let delegate = LocationManagerDelegate()
+      manager.delegate = delegate
+      return (manager, delegate)
+    }
 
     return Self(
-      accuracyAuthorization: {
+      accuracyAuthorization: { @MainActor in
         #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
           if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-            return AccuracyAuthorization(manager.accuracyAuthorization)
+            return await AccuracyAuthorization(task.value.manager.accuracyAuthorization)
           }
         #endif
         return nil
       },
-      authorizationStatus: {
+      authorizationStatus: { @MainActor in
         #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
           if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-            return manager.authorizationStatus
+            return await task.value.manager.authorizationStatus
           }
         #endif
         return CLLocationManager.authorizationStatus()
       },
-      delegate: {
-        AsyncStream { continuation in
-          let delegate = LocationManagerDelegate(continuation: continuation)
-          manager.delegate = delegate
-          continuation.onTermination = { [delegate] _ in
-            _ = delegate
-          }
-        }
+      delegate: { @MainActor in
+        let delegate = await task.value.delegate
+        return AsyncStream { delegate.registerContinuation($0) }
       },
-      dismissHeadingCalibrationDisplay: {
+      dismissHeadingCalibrationDisplay: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.dismissHeadingCalibrationDisplay()
+          await task.value.manager.dismissHeadingCalibrationDisplay()
         #endif
       },
-      heading: {
+      heading: { @MainActor in
         #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          return manager.heading.map(Heading.init(rawValue:))
+          return await task.value.manager.heading.map(Heading.init(rawValue:))
         #else
           return nil
         #endif
       },
-      headingAvailable: {
+      headingAvailable: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
           return CLLocationManager.headingAvailable()
         #else
           return false
         #endif
       },
-      isRangingAvailable: {
+      isRangingAvailable: { @MainActor in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
           return CLLocationManager.isRangingAvailable()
         #else
           return false
         #endif
       },
-      location: { manager.location.map(Location.init(rawValue:)) },
-      locationServicesEnabled: CLLocationManager.locationServicesEnabled,
-      maximumRegionMonitoringDistance: {
+      location: { @MainActor in await task.value.manager.location.map(Location.init(rawValue:)) },
+      locationServicesEnabled: { @MainActor in CLLocationManager.locationServicesEnabled() },
+      maximumRegionMonitoringDistance: { @MainActor in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-          return manager.maximumRegionMonitoringDistance
+          return await task.value.manager.maximumRegionMonitoringDistance
         #else
           return CLLocationDistanceMax
         #endif
       },
-      monitoredRegions: {
+      monitoredRegions: { @MainActor in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-          return Set(manager.monitoredRegions.map(Region.init(rawValue:)))
+          return await Set(task.value.manager.monitoredRegions.map(Region.init(rawValue:)))
         #else
           return []
         #endif
       },
-      requestAlwaysAuthorization: {
+      requestAlwaysAuthorization: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.requestAlwaysAuthorization()
+          await task.value.manager.requestAlwaysAuthorization()
         #endif
       },
-      requestLocation: {
-        manager.requestLocation()
+      requestLocation: { @MainActor in
+        await task.value.manager.requestLocation()
       },
-      requestWhenInUseAuthorization: {
+      requestWhenInUseAuthorization: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.requestWhenInUseAuthorization()
+          await task.value.manager.requestWhenInUseAuthorization()
         #endif
       },
-      requestTemporaryFullAccuracyAuthorization: { purposeKey in
-        try await withCheckedThrowingContinuation { continuation in
-          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-              manager.requestTemporaryFullAccuracyAuthorization(
-                withPurposeKey: purposeKey
-              ) { error in
-                if let error = error {
-                  continuation.resume(throwing: error)
-                } else {
-                  continuation.resume()
-                }
-              }
-            } else {
-              continuation.resume()
-            }
-          #else
-            continuation.resume()
-          #endif
-        }
+      requestTemporaryFullAccuracyAuthorization: { @MainActor purposeKey in
+        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+          if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
+            try await task.value.manager.requestTemporaryFullAccuracyAuthorization(
+              withPurposeKey: purposeKey)
+          }
+        #endif
       },
-      set: { properties in
+      set: { @MainActor properties in
+        let manager = await task.value.manager
+
         #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
           if let activityType = properties.activityType {
             manager.activityType = activityType
@@ -156,61 +146,61 @@ extension LocationManager {
           }
         #endif
       },
-      significantLocationChangeMonitoringAvailable: {
+      significantLocationChangeMonitoringAvailable: { @MainActor in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
           return CLLocationManager.significantLocationChangeMonitoringAvailable()
         #else
           return false
         #endif
       },
-      startMonitoringForRegion: { region in
+      startMonitoringForRegion: { @MainActor region in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-          manager.startMonitoring(for: region.rawValue!)
+          await task.value.manager.startMonitoring(for: region.rawValue!)
         #endif
       },
-      startMonitoringSignificantLocationChanges: {
+      startMonitoringSignificantLocationChanges: { @MainActor in
         #if os(iOS) || targetEnvironment(macCatalyst)
-          manager.startMonitoringSignificantLocationChanges()
+          await task.value.manager.startMonitoringSignificantLocationChanges()
         #endif
       },
-      startMonitoringVisits: {
+      startMonitoringVisits: { @MainActor in
         #if os(iOS) || targetEnvironment(macCatalyst)
-          manager.startMonitoringVisits()
+          await task.value.manager.startMonitoringVisits()
         #endif
       },
-      startUpdatingHeading: {
+      startUpdatingHeading: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.startUpdatingHeading()
+          await task.value.manager.startUpdatingHeading()
         #endif
       },
-      startUpdatingLocation: {
+      startUpdatingLocation: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.startUpdatingLocation()
+          await task.value.manager.startUpdatingLocation()
         #endif
       },
-      stopMonitoringForRegion: { region in
+      stopMonitoringForRegion: { @MainActor region in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
-          manager.stopMonitoring(for: region.rawValue!)
+          await task.value.manager.stopMonitoring(for: region.rawValue!)
         #endif
       },
-      stopMonitoringSignificantLocationChanges: {
+      stopMonitoringSignificantLocationChanges: { @MainActor in
         #if os(iOS) || targetEnvironment(macCatalyst)
-          manager.stopMonitoringSignificantLocationChanges()
+          await task.value.manager.stopMonitoringSignificantLocationChanges()
         #endif
       },
-      stopMonitoringVisits: {
+      stopMonitoringVisits: { @MainActor in
         #if os(iOS) || targetEnvironment(macCatalyst)
-          manager.stopMonitoringVisits()
+          await task.value.manager.stopMonitoringVisits()
         #endif
       },
-      stopUpdatingHeading: {
+      stopUpdatingHeading: { @MainActor in
         #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.stopUpdatingHeading()
+          await task.value.manager.stopUpdatingHeading()
         #endif
       },
-      stopUpdatingLocation: {
+      stopUpdatingLocation: { @MainActor in
         #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
-          manager.stopUpdatingLocation()
+          await task.value.manager.stopUpdatingLocation()
         #endif
       }
     )
@@ -218,24 +208,45 @@ extension LocationManager {
 }
 
 private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
-  let continuation: AsyncStream<LocationManager.Action>.Continuation
+  let continuations: ActorIsolated<[UUID: AsyncStream<LocationManager.Action>.Continuation]>
 
-  init(continuation: AsyncStream<LocationManager.Action>.Continuation) {
-    self.continuation = continuation
+  override init() {
+    self.continuations = .init([:])
+    super.init()
+  }
+
+  func registerContinuation(_ continuation: AsyncStream<LocationManager.Action>.Continuation) {
+    Task { [continuations] in
+      await continuations.withValue {
+        let id = UUID()
+        $0[id] = continuation
+        continuation.onTermination = { [weak self] _ in self?.unregisterContinuation(withID: id) }
+      }
+    }
+  }
+
+  private func unregisterContinuation(withID id: UUID) {
+    Task { [continuations] in await continuations.withValue { $0.removeValue(forKey: id) } }
+  }
+
+  private func send(_ action: LocationManager.Action) {
+    Task { [continuations] in
+      await continuations.withValue { $0.values.forEach { $0.yield(action) } }
+    }
   }
 
   func locationManager(
     _ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus
   ) {
-    self.continuation.yield(.didChangeAuthorization(status))
+    send(.didChangeAuthorization(status))
   }
 
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    self.continuation.yield(.didFailWithError(LocationManager.Error(error)))
+    send(.didFailWithError(LocationManager.Error(error)))
   }
 
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    self.continuation.yield(.didUpdateLocations(locations.map(Location.init(rawValue:))))
+    send(.didUpdateLocations(locations.map(Location.init(rawValue:))))
   }
 
   #if os(macOS)
@@ -243,12 +254,10 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didUpdateTo newLocation: CLLocation,
       from oldLocation: CLLocation
     ) {
-        self.continuation.yield(
-            .didUpdateTo(
-              newLocation: Location(rawValue: newLocation),
-              oldLocation: Location(rawValue: oldLocation)
-            )
-        )
+      send(
+        .didUpdateTo(
+          newLocation: Location(rawValue: newLocation), oldLocation: Location(rawValue: oldLocation)
+        ))
     }
   #endif
 
@@ -256,7 +265,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?
     ) {
-      self.continuation.yield(
+      send(
         .didFinishDeferredUpdatesWithError(error.map(LocationManager.Error.init))
       )
     }
@@ -264,31 +273,31 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
-      self.continuation.yield(.didPauseLocationUpdates)
+      send(.didPauseLocationUpdates)
     }
   #endif
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
-      self.continuation.yield(.didResumeLocationUpdates)
+      send(.didResumeLocationUpdates)
     }
   #endif
 
   #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-      self.continuation.yield(.didUpdateHeading(newHeading: Heading(rawValue: newHeading)))
+      send(.didUpdateHeading(newHeading: Heading(rawValue: newHeading)))
     }
   #endif
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-      self.continuation.yield(.didEnterRegion(Region(rawValue: region)))
+      send(.didEnterRegion(Region(rawValue: region)))
     }
   #endif
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-      self.continuation.yield(.didExitRegion(Region(rawValue: region)))
+      send(.didExitRegion(Region(rawValue: region)))
     }
   #endif
 
@@ -296,7 +305,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion
     ) {
-      self.continuation.yield(.didDetermineState(state, region: Region(rawValue: region)))
+      send(.didDetermineState(state, region: Region(rawValue: region)))
     }
   #endif
 
@@ -304,7 +313,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     func locationManager(
       _ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error
     ) {
-      self.continuation.yield(
+      send(
         .monitoringDidFail(
           region: region.map(Region.init(rawValue:)), error: LocationManager.Error(error)))
     }
@@ -312,7 +321,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-      self.continuation.yield(.didStartMonitoring(region: Region(rawValue: region)))
+      send(.didStartMonitoring(region: Region(rawValue: region)))
     }
   #endif
 
@@ -321,7 +330,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didRange beacons: [CLBeacon],
       satisfying beaconConstraint: CLBeaconIdentityConstraint
     ) {
-      self.continuation.yield(
+      send(
         .didRangeBeacons(
           beacons.map(Beacon.init(rawValue:)), satisfyingConstraint: beaconConstraint
         )
@@ -334,7 +343,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didFailRangingFor beaconConstraint: CLBeaconIdentityConstraint,
       error: Error
     ) {
-      self.continuation.yield(
+      send(
         .didFailRanging(beaconConstraint: beaconConstraint, error: LocationManager.Error(error))
       )
     }
@@ -342,7 +351,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-      self.continuation.yield(.didVisit(Visit(visit: visit)))
+      send(.didVisit(Visit(visit: visit)))
     }
   #endif
 }

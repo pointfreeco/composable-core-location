@@ -252,29 +252,39 @@ public struct LocationManager {
     }
   }
 
-  public var accuracyAuthorization: () -> AccuracyAuthorization?
+  public var accuracyAuthorization: @Sendable () async -> AccuracyAuthorization?
 
-  public var authorizationStatus: () -> CLAuthorizationStatus
+  public var authorizationStatus: @Sendable () async -> CLAuthorizationStatus
 
-  public var delegate: @Sendable () -> AsyncStream<Action>
+  public var delegate: @Sendable () async -> AsyncStream<Action>
 
   @available(macOS, unavailable)
   @available(tvOS, unavailable)
   public var dismissHeadingCalibrationDisplay: @Sendable () async -> Void
 
-  public var heading: () -> Heading?
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  public var heading: @Sendable () async -> Heading?
 
-  public var headingAvailable: () -> Bool
+  @available(tvOS, unavailable)
+  public var headingAvailable: @Sendable () async -> Bool
 
-  public var isRangingAvailable: () -> Bool
+  @available(macOS, unavailable)
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var isRangingAvailable: @Sendable () async -> Bool
 
-  public var location: () -> Location?
+  public var location: @Sendable () async -> Location?
 
-  public var locationServicesEnabled: () -> Bool
+  public var locationServicesEnabled: @Sendable () async -> Bool
 
-  public var maximumRegionMonitoringDistance: () -> CLLocationDistance
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var maximumRegionMonitoringDistance: @Sendable () async -> CLLocationDistance
 
-  public var monitoredRegions: () -> Set<Region>
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var monitoredRegions: @Sendable () async -> Set<Region>
 
   @available(tvOS, unavailable)
   public var requestAlwaysAuthorization: @Sendable () async -> Void
@@ -287,7 +297,9 @@ public struct LocationManager {
 
   public var set: @Sendable (Properties) async -> Void
 
-  public var significantLocationChangeMonitoringAvailable: () -> Bool
+  @available(tvOS, unavailable)
+  @available(watchOS, unavailable)
+  public var significantLocationChangeMonitoringAvailable: @Sendable () async -> Bool
 
   @available(tvOS, unavailable)
   @available(watchOS, unavailable)
