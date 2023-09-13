@@ -365,26 +365,40 @@ public struct LocationManager: Sendable {
         pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
         showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
       )
-    #endif
+    )
   }
 }
 
 extension LocationManager {
   public struct Properties: Equatable {
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
     var activityType: CLActivityType? = nil
 
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
     var allowsBackgroundLocationUpdates: Bool? = nil
 
     var desiredAccuracy: CLLocationAccuracy? = nil
 
     var distanceFilter: CLLocationDistance? = nil
 
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
     var headingFilter: CLLocationDegrees? = nil
 
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
     var headingOrientation: CLDeviceOrientation? = nil
 
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     var pausesLocationUpdatesAutomatically: Bool? = nil
 
+    @available(macOS, unavailable)
+    @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
     var showsBackgroundLocationIndicator: Bool? = nil
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
