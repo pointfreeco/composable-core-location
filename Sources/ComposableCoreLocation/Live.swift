@@ -71,7 +71,7 @@ extension LocationManager {
         #endif
       },
       location: { @MainActor in await task.value.manager.location.map(Location.init(rawValue:)) },
-      locationServicesEnabled: { @MainActor in CLLocationManager.locationServicesEnabled() },
+      locationServicesEnabled: { CLLocationManager.locationServicesEnabled() },
       maximumRegionMonitoringDistance: { @MainActor in
         #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
           return await task.value.manager.maximumRegionMonitoringDistance
