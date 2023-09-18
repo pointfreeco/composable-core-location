@@ -1,5 +1,4 @@
 import Combine
-import ComposableArchitecture
 import CoreLocation
 
 /// A wrapper around Core Location's `CLLocationManager` that exposes its functionality through
@@ -257,9 +256,9 @@ public struct LocationManager {
 
   public var authorizationStatus: () -> CLAuthorizationStatus
 
-  public var delegate: () -> EffectPublisher<Action, Never>
+  public var delegate: () -> AnyPublisher<Action, Never>
 
-  public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
+  public var dismissHeadingCalibrationDisplay: () -> AnyPublisher<Never, Never>
 
   public var heading: () -> Heading?
 
@@ -275,37 +274,37 @@ public struct LocationManager {
 
   public var monitoredRegions: () -> Set<Region>
 
-  public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
+  public var requestAlwaysAuthorization: () -> AnyPublisher<Never, Never>
 
-  public var requestLocation: () -> EffectPublisher<Never, Never>
+  public var requestLocation: () -> AnyPublisher<Never, Never>
 
-  public var requestWhenInUseAuthorization: () -> EffectPublisher<Never, Never>
+  public var requestWhenInUseAuthorization: () -> AnyPublisher<Never, Never>
 
-  public var requestTemporaryFullAccuracyAuthorization: (String) -> EffectPublisher<Never, Error>
+  public var requestTemporaryFullAccuracyAuthorization: (String) -> AnyPublisher<Never, Error>
 
-  public var set: (Properties) -> EffectPublisher<Never, Never>
+  public var set: (Properties) -> AnyPublisher<Never, Never>
 
   public var significantLocationChangeMonitoringAvailable: () -> Bool
 
-  public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  public var startMonitoringForRegion: (Region) -> AnyPublisher<Never, Never>
 
-  public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  public var startMonitoringSignificantLocationChanges: () -> AnyPublisher<Never, Never>
 
-  public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
+  public var startMonitoringVisits: () -> AnyPublisher<Never, Never>
 
-  public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
+  public var startUpdatingHeading: () -> AnyPublisher<Never, Never>
 
-  public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
+  public var startUpdatingLocation: () -> AnyPublisher<Never, Never>
 
-  public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
+  public var stopMonitoringForRegion: (Region) -> AnyPublisher<Never, Never>
 
-  public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
+  public var stopMonitoringSignificantLocationChanges: () -> AnyPublisher<Never, Never>
 
-  public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
+  public var stopMonitoringVisits: () -> AnyPublisher<Never, Never>
 
-  public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
+  public var stopUpdatingHeading: () -> AnyPublisher<Never, Never>
 
-  public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
+  public var stopUpdatingLocation: () -> AnyPublisher<Never, Never>
 
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
   public func set(
@@ -317,9 +316,9 @@ public struct LocationManager {
     headingOrientation: CLDeviceOrientation? = nil,
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
-  ) -> EffectPublisher<Never, Never> {
+  ) -> AnyPublisher<Never, Never> {
     #if os(macOS) || os(tvOS) || os(watchOS)
-      return .none
+      return Empty().eraseToAnyPublisher()
     #else
       return self.set(
         Properties(
@@ -340,7 +339,7 @@ public struct LocationManager {
 extension LocationManager {
   public struct Properties: Equatable {
     var activityType: CLActivityType? = nil
-
+    
     var allowsBackgroundLocationUpdates: Bool? = nil
 
     var desiredAccuracy: CLLocationAccuracy? = nil
