@@ -107,13 +107,13 @@ extension LocationManager {
         
         #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
         if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0,macCatalyst 14.0, *) {
-            manager.requestTemporaryFullAccuracyAuthorization(
+          manager.requestTemporaryFullAccuracyAuthorization(
             withPurposeKey: purposeKey
-            ) { error in
+          ) { error in
             subject.send(completion: error.map { .failure(.init($0)) } ?? .finished)
-            }
+          }
         } else {
-            subject.send(completion: .finished)
+          subject.send(completion: .finished)
         }
         #else
         subject.send(completion: .finished)
@@ -283,19 +283,19 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
-      self.subscriber.send(.didPauseLocationUpdates)
+      self.subject.send(.didPauseLocationUpdates)
     }
   #endif
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
-      self.subscriber.send(.didResumeLocationUpdates)
+      self.subject.send(.didResumeLocationUpdates)
     }
   #endif
 
   #if os(iOS) || os(watchOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-      self.subscriber.send(.didUpdateHeading(newHeading: Heading(rawValue: newHeading)))
+      self.subject.send(.didUpdateHeading(newHeading: Heading(rawValue: newHeading)))
     }
   #endif
 
@@ -340,7 +340,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didRange beacons: [CLBeacon],
       satisfying beaconConstraint: CLBeaconIdentityConstraint
     ) {
-      self.subscriber.send(
+      self.subject.send(
         .didRangeBeacons(
           beacons.map(Beacon.init(rawValue:)), satisfyingConstraint: beaconConstraint
         )
@@ -353,7 +353,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
       _ manager: CLLocationManager, didFailRangingFor beaconConstraint: CLBeaconIdentityConstraint,
       error: Error
     ) {
-      self.subscriber.send(
+      self.subject.send(
         .didFailRanging(beaconConstraint: beaconConstraint, error: LocationManager.Error(error))
       )
     }
@@ -361,7 +361,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
 
   #if os(iOS) || targetEnvironment(macCatalyst)
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
-      self.subscriber.send(.didVisit(Visit(visit: visit)))
+      self.subject.send(.didVisit(Visit(visit: visit)))
     }
   #endif
 }
