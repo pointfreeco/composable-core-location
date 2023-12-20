@@ -337,7 +337,7 @@ private final class LocationManagerDelegate: NSObject, CLLocationManagerDelegate
       send(
         .didRangeBeacons(
           beacons.map(Beacon.init(rawValue:)),
-          satisfyingConstraint: BeaconConstraint(rawValue: beaconConstraint)
+          satisfyingConstraint: beaconConstraint
         )
       )
     }
@@ -350,7 +350,7 @@ private final class LocationManagerDelegate: NSObject, CLLocationManagerDelegate
     ) {
       send(
         .didFailRanging(
-          beaconConstraint: BeaconConstraint(rawValue: beaconConstraint),
+          beaconConstraint: beaconConstraint,
           error: LocationManager.Error(error))
       )
     }
