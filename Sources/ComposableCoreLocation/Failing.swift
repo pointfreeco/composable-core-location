@@ -1,4 +1,3 @@
-import ComposableArchitecture
 import CoreLocation
 import XCTestDynamicOverlay
 
@@ -38,72 +37,38 @@ extension LocationManager {
   /// }
   /// ```
   public static let failing = Self(
-    accuracyAuthorization: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.accuracyAuthorization'")
-      return nil
-    },
-    authorizationStatus: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.authorizationStatus'")
-      return .notDetermined
-    },
-    delegate: { .failing("LocationManager.delegate") },
-    dismissHeadingCalibrationDisplay: {
-      .failing("LocationManager.dismissHeadingCalibrationDisplay")
-    },
-    heading: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.heading'")
-      return nil
-    },
-    headingAvailable: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.headingAvailable'")
-      return false
-    },
-    isRangingAvailable: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.isRangingAvailable'")
-      return false
-    },
-    location: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.location'")
-      return nil
-    },
-    locationServicesEnabled: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.locationServicesEnabled'")
-      return false
-    },
-    maximumRegionMonitoringDistance: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.maximumRegionMonitoringDistance'")
-      return CLLocationDistanceMax
-    },
-    monitoredRegions: {
-      XCTFail("A failing endpoint was accessed: 'LocationManager.monitoredRegions'")
-      return []
-    },
-    requestAlwaysAuthorization: { .failing("LocationManager.requestAlwaysAuthorization") },
-    requestLocation: { .failing("LocationManager.requestLocation") },
-    requestWhenInUseAuthorization: {
-      .failing("LocationManager.requestWhenInUseAuthorization")
-    },
-    requestTemporaryFullAccuracyAuthorization: { _ in
-      .failing("LocationManager.requestTemporaryFullAccuracyAuthorization")
-    },
-    set: { _ in .failing("LocationManager.set") },
-    significantLocationChangeMonitoringAvailable: {
-      XCTFail()
-      return false
-    },
-    startMonitoringForRegion: { _ in .failing("LocationManager.startMonitoringForRegion") },
-    startMonitoringSignificantLocationChanges: {
-      .failing("LocationManager.startMonitoringSignificantLocationChanges")
-    },
-    startMonitoringVisits: { .failing("LocationManager.startMonitoringVisits") },
-    startUpdatingHeading: { .failing("LocationManager.startUpdatingHeading") },
-    startUpdatingLocation: { .failing("LocationManager.startUpdatingLocation") },
-    stopMonitoringForRegion: { _ in .failing("LocationManager.stopMonitoringForRegion") },
-    stopMonitoringSignificantLocationChanges: {
-      .failing("LocationManager.stopMonitoringSignificantLocationChanges")
-    },
-    stopMonitoringVisits: { .failing("LocationManager.stopMonitoringVisits") },
-    stopUpdatingHeading: { .failing("LocationManager.stopUpdatingHeading") },
-    stopUpdatingLocation: { .failing("LocationManager.stopUpdatingLocation") }
+    accuracyAuthorization: XCTUnimplemented("\(Self.self).accuracyAuthorization"),
+    authorizationStatus: XCTUnimplemented("\(Self.self).authorizationStatus"),
+    delegate: XCTUnimplemented("\(Self.self).delegate"),
+    dismissHeadingCalibrationDisplay: XCTUnimplemented(
+      "\(Self.self).dismissHeadingCalibrationDisplay"),
+    heading: XCTUnimplemented("\(Self.self).heading"),
+    headingAvailable: XCTUnimplemented("\(Self.self).headingAvailable"),
+    isRangingAvailable: XCTUnimplemented("\(Self.self).isRangingAvailable"),
+    location: XCTUnimplemented("\(Self.self).location"),
+    locationServicesEnabled: XCTUnimplemented("\(Self.self).locationServicesEnabled"),
+    maximumRegionMonitoringDistance: XCTUnimplemented(
+      "\(Self.self).maximumRegionMonitoringDistance"),
+    monitoredRegions: XCTUnimplemented("\(Self.self).monitoredRegions"),
+    requestAlwaysAuthorization: XCTUnimplemented("\(Self.self).requestAlwaysAuthorization"),
+    requestLocation: XCTUnimplemented("\(Self.self).requestLocation"),
+    requestWhenInUseAuthorization: XCTUnimplemented("\(Self.self).requestWhenInUseAuthorization"),
+    requestTemporaryFullAccuracyAuthorization: XCTUnimplemented(
+      "\(Self.self).requestTemporaryFullAccuracyAuthorization"),
+    set: XCTUnimplemented("\(Self.self).set"),
+    significantLocationChangeMonitoringAvailable: XCTUnimplemented(
+      "\(Self.self).significantLocationChangeMonitoringAvailable"),
+    startMonitoringForRegion: XCTUnimplemented("\(Self.self).startMonitoringForRegion"),
+    startMonitoringSignificantLocationChanges: XCTUnimplemented(
+      "\(Self.self).startMonitoringSignificantLocationChanges"),
+    startMonitoringVisits: XCTUnimplemented("\(Self.self).startMonitoringVisits"),
+    startUpdatingHeading: XCTUnimplemented("\(Self.self).startUpdatingHeading"),
+    startUpdatingLocation: XCTUnimplemented("\(Self.self).startUpdatingLocation"),
+    stopMonitoringForRegion: XCTUnimplemented("\(Self.self).stopMonitoringForRegion"),
+    stopMonitoringSignificantLocationChanges: XCTUnimplemented(
+      "\(Self.self).stopMonitoringSignificantLocationChanges"),
+    stopMonitoringVisits: XCTUnimplemented("\(Self.self).stopMonitoringVisits"),
+    stopUpdatingHeading: XCTUnimplemented("\(Self.self).stopUpdatingHeading"),
+    stopUpdatingLocation: XCTUnimplemented("\(Self.self).stopUpdatingLocation")
   )
 }

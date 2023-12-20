@@ -133,9 +133,9 @@ public struct Placemark: Equatable {
     self.subLocality = rawValue.subLocality
     self.subThoroughfare = rawValue.subThoroughfare
     self.subtitle =
-      rawValue.responds(to: #selector(getter:MKPlacemark.subtitle)) ? rawValue.subtitle : nil
+      rawValue.responds(to: #selector(getter: MKPlacemark.subtitle)) ? rawValue.subtitle : nil
     self.thoroughfare = rawValue.thoroughfare
-    self.title = rawValue.responds(to: #selector(getter:MKPlacemark.title)) ? rawValue.title : nil
+    self.title = rawValue.responds(to: #selector(getter: MKPlacemark.title)) ? rawValue.title : nil
   }
 
   public init(

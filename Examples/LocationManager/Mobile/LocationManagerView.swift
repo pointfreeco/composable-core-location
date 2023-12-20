@@ -14,14 +14,14 @@ private let readMe = """
 
 struct LocationManagerView: View {
   @Environment(\.colorScheme) var colorScheme
-  let store: Store<AppState, AppAction>
+  let store: StoreOf<App>
 
   var body: some View {
-    WithViewStore(self.store) { viewStore in
+    WithViewStore(self.store, observe: { $0 }) { viewStore in
       ZStack {
         MapView(
           pointsOfInterest: viewStore.pointsOfInterest,
-          region: viewStore.binding(get: { $0.region }, send: AppAction.updateRegion)
+          region: viewStore.binding(get: \.region, send: App.Action.updateRegion)
         )
         .edgesIgnoringSafeArea([.all])
 
@@ -40,7 +40,7 @@ struct LocationManagerView: View {
 
           ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
-              ForEach(AppState.pointOfInterestCategories, id: \.rawValue) { category in
+                ForEach(App.State.pointOfInterestCategories, id: \.rawValue) { category in
                 Button(category.displayName) { viewStore.send(.categoryButtonTapped(category)) }
                   .padding([.all], 16)
                   .background(
@@ -55,9 +55,8 @@ struct LocationManagerView: View {
           }
         }
       }
-      .alert(self.store.scope(state: { $0.alert }), dismiss: .dismissAlertButtonTapped)
-      .onAppear { viewStore.send(.onAppear) }
-      .onDisappear { viewStore.send(.onDisappear) }
+      .task { await viewStore.send(.task).finish() }
+      .alert(store: self.store.scope(state: \.$alert, action: App.Action.alert))
     }
   }
 }
@@ -75,10 +74,12 @@ struct ContentView: View {
             "Go to demo",
             destination: LocationManagerView(
               store: Store(
-                initialState: AppState(),
-                reducer: appReducer,
-                environment: AppEnvironment(localSearch: .live, locationManager: .live)
-              )
+                initialState: App.State()
+              ) {
+                  App()
+                      .dependency(\.localSearchClient, .liveValue)
+                      .dependency(\.locationManager, .live)
+              }
             )
           )
         }
@@ -90,32 +91,19 @@ struct ContentView: View {
 }
 
 #if DEBUG
+
+
+
   struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-      // NB: CLLocationManager mostly does not work in SwiftUI previews, so we provide a mock
-      //     manager that has all authorization allowed and mocks the device's current location
-      //     to Brooklyn, NY.
-      let mockLocation = Location(
-        coordinate: CLLocationCoordinate2D(latitude: 40.6501, longitude: -73.94958)
-      )
-      let locationManagerSubject = PassthroughSubject<LocationManager.Action, Never>()
-      var locationManager = LocationManager.live
-      locationManager.authorizationStatus = { .authorizedAlways }
-      locationManager.delegate = { locationManagerSubject.eraseToEffect() }
-      locationManager.locationServicesEnabled = { true }
-      locationManager.requestLocation = {
-        .fireAndForget { locationManagerSubject.send(.didUpdateLocations([mockLocation])) }
-      }
-
       let appView = LocationManagerView(
         store: Store(
-          initialState: AppState(),
-          reducer: appReducer,
-          environment: AppEnvironment(
-            localSearch: .live,
-            locationManager: locationManager
-          )
-        )
+          initialState: App.State()
+        ) {
+            App()
+                .dependency(\.localSearchClient, .liveValue)
+                .dependency(\.locationManager, .mock())
+        }
       )
 
       return Group {
@@ -126,4 +114,65 @@ struct ContentView: View {
       }
     }
   }
+
+extension LocationManager {
+    
+    static func mock() -> Self {
+        actor MockStore {
+            let locationManagerSubject: CurrentValueSubject<LocationManager.Action, Never>
+            var currentAuthorizationStatus: CLAuthorizationStatus {
+                didSet {
+                    locationManagerSubject.send(.didChangeAuthorization(currentAuthorizationStatus))
+                }
+            }
+            
+            var currentLocation: ComposableCoreLocation.Location? {
+                didSet {
+                    locationManagerSubject.send(
+                        .didUpdateLocations(currentLocation.map { [$0] } ?? [])
+                    )
+                }
+            }
+            
+            init(authorization: CLAuthorizationStatus) {
+                self.currentAuthorizationStatus = authorization
+                self.locationManagerSubject = .init(.didChangeAuthorization(currentAuthorizationStatus))
+            }
+            
+            func update(authorization: CLAuthorizationStatus) {
+                self.currentAuthorizationStatus = authorization
+            }
+            
+            func update(location: ComposableCoreLocation.Location) {
+                self.currentLocation = location
+            }
+        }
+        
+        // NB: CLLocationManager mostly does not work in SwiftUI previews, so we provide a mock
+        //     manager that has all authorization allowed and mocks the device's current location
+        //     to Brooklyn, NY.
+        let mockLocation = Location(
+            coordinate: CLLocationCoordinate2D(latitude: 40.6501, longitude: -73.94958)
+        )
+        let store = MockStore(authorization: .authorizedAlways)
+        var manager = LocationManager.live
+
+        manager.delegate = {
+            AsyncStream { continuation in
+                let cancellable = store.locationManagerSubject.sink { action in
+                    continuation.yield(action)
+                }
+                continuation.onTermination = { _ in
+                    cancellable.cancel()
+                }
+            }
+        }
+        manager.locationServicesEnabled = { true }
+        manager.requestLocation = {
+            await store.update(location: mockLocation)
+        }
+        return manager
+    }
+}
+
 #endif
