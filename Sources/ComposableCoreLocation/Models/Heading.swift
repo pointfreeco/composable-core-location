@@ -2,7 +2,7 @@ import CoreLocation
 
 /// A value type wrapper for `CLHeading`. This type is necessary so that we can do equality checks
 /// and write tests against its values.
-public struct Heading: Hashable {
+public struct Heading: Hashable, Sendable {
   public var headingAccuracy: CLLocationDirection
   public var magneticHeading: CLLocationDirection
   public var timestamp: Date
