@@ -1,10 +1,10 @@
 import Combine
 import CoreLocation
-import IssueReporting
+import XCTestDynamicOverlay
 
 extension LocationManager {
   /// The failing implementation of the ``LocationManager`` interface. By default this
-  /// implementation stubs all of its endpoints as functions that immediately call `reportIssue`.
+  /// implementation stubs all of its endpoints as functions that immediately call `XCTFail`.
   ///
   /// This allows you to test an even deeper property of your features: that they use only the
   /// location manager endpoints that you specify and nothing else. This can be useful as a
@@ -39,11 +39,11 @@ extension LocationManager {
   /// ```
   public static let failing = Self(
     accuracyAuthorization: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.accuracyAuthorization'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.accuracyAuthorization'")
       return nil
     },
     authorizationStatus: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.authorizationStatus'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.authorizationStatus'")
       return .notDetermined
     },
     delegate: { .unimplemented("LocationManager.delegate") },
@@ -51,31 +51,31 @@ extension LocationManager {
       .unimplemented("LocationManager.dismissHeadingCalibrationDisplay")
     },
     heading: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.heading'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.heading'")
       return nil
     },
     headingAvailable: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.headingAvailable'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.headingAvailable'")
       return false
     },
     isRangingAvailable: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.isRangingAvailable'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.isRangingAvailable'")
       return false
     },
     location: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.location'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.location'")
       return nil
     },
     locationServicesEnabled: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.locationServicesEnabled'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.locationServicesEnabled'")
       return false
     },
     maximumRegionMonitoringDistance: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.maximumRegionMonitoringDistance'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.maximumRegionMonitoringDistance'")
       return CLLocationDistanceMax
     },
     monitoredRegions: {
-      reportIssue("A failing endpoint was accessed: 'LocationManager.monitoredRegions'")
+      XCTFail("A failing endpoint was accessed: 'LocationManager.monitoredRegions'")
       return []
     },
     requestAlwaysAuthorization: { .unimplemented("LocationManager.requestAlwaysAuthorization") },
@@ -88,7 +88,7 @@ extension LocationManager {
     },
     set: { _ in .unimplemented("LocationManager.set") },
     significantLocationChangeMonitoringAvailable: {
-      reportIssue()
+      XCTFail()
       return false
     },
     startMonitoringForRegion: { _ in .unimplemented("LocationManager.startMonitoringForRegion") },

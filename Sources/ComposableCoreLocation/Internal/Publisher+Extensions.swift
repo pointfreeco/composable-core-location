@@ -1,10 +1,10 @@
 import Combine
-import IssueReporting
+import XCTestDynamicOverlay
 
 extension AnyPublisher {
-  static func unimplemented(_ prefix: String, fileID: StaticString = #fileID, filePath: StaticString = #filePath, line: UInt = #line) -> Self {
+  static func unimplemented(_ prefix: String, file: StaticString = #file, line: UInt = #line) -> Self {
     .fireAndForget {
-      reportIssue("\(prefix.isEmpty ? "" : "\(prefix) - ")An unimplemented publisher ran.", fileID: fileID, filePath: filePath, line: line)
+      XCTFail("\(prefix.isEmpty ? "" : "\(prefix) - ")An unimplemented publisher ran.", file: file, line: line)
     }
   }
   

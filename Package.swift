@@ -18,7 +18,7 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/pointfreeco/swift-issue-reporting",
+      url: "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "0.9.0"..<"2.0.0"
     ),
   ],
@@ -26,7 +26,7 @@ let package = Package(
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "IssueReporting", package: "swift-issue-reporting"),
+        .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
     ),
     .testTarget(
