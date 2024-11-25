@@ -1,6 +1,6 @@
-import Combine
-import ComposableArchitecture
 import CoreLocation
+import Dependencies
+import DependenciesMacros
 
 /// A wrapper around Core Location's `CLLocationManager` that exposes its functionality through
 /// effects and actions, making it easy to use with the Composable Architecture and easy to test.
@@ -9,7 +9,7 @@ import CoreLocation
 /// manager can emit via the `CLLocationManagerDelegate` methods:
 ///
 /// ```swift
-/// import ComposableCoreLocation
+/// import CoreLocationClient
 ///
 /// enum AppAction {
 ///   case locationManager(LocationManager.Action)
@@ -178,137 +178,138 @@ import CoreLocation
 /// control, and even what happens when the request for their location fails. It is very easy to
 /// write these tests, and we can test deep, subtle properties of our application.
 ///
-public struct LocationManager {
+@DependencyClient
+public struct LocationManager: Sendable {
   /// Actions that correspond to `CLLocationManagerDelegate` methods.
   ///
   /// See `CLLocationManagerDelegate` for more information.
-  public enum Action: Equatable {
+  public enum Action: Equatable, Sendable {
     case didChangeAuthorization(CLAuthorizationStatus)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didDetermineState(CLRegionState, region: Region)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didEnterRegion(Region)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didExitRegion(Region)
-
+    
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didFailRanging(beaconConstraint: CLBeaconIdentityConstraint, error: Error)
-
+    
     case didFailWithError(Error)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didFinishDeferredUpdatesWithError(Error?)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didPauseLocationUpdates
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didResumeLocationUpdates
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didStartMonitoring(region: Region)
-
+    
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     case didUpdateHeading(newHeading: Heading)
-
+    
     case didUpdateLocations([Location])
-
+    
     @available(macCatalyst, deprecated: 13)
     @available(tvOS, unavailable)
     case didUpdateTo(newLocation: Location, oldLocation: Location)
-
+    
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didVisit(Visit)
-
+    
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case monitoringDidFail(region: Region?, error: Error)
-
+    
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
     case didRangeBeacons([Beacon], satisfyingConstraint: CLBeaconIdentityConstraint)
   }
-
+  
   public struct Error: Swift.Error, Equatable {
     public let error: NSError
-
+    
     public init(_ error: Swift.Error) {
       self.error = error as NSError
     }
   }
-
-  public var accuracyAuthorization: () -> AccuracyAuthorization?
-
-  public var authorizationStatus: () -> CLAuthorizationStatus
-
-  public var delegate: () -> EffectPublisher<Action, Never>
-
-  public var dismissHeadingCalibrationDisplay: () -> EffectPublisher<Never, Never>
-
-  public var heading: () -> Heading?
-
-  public var headingAvailable: () -> Bool
-
-  public var isRangingAvailable: () -> Bool
-
-  public var location: () -> Location?
-
-  public var locationServicesEnabled: () -> Bool
-
-  public var maximumRegionMonitoringDistance: () -> CLLocationDistance
-
-  public var monitoredRegions: () -> Set<Region>
-
-  public var requestAlwaysAuthorization: () -> EffectPublisher<Never, Never>
-
-  public var requestLocation: () -> EffectPublisher<Never, Never>
-
-  public var requestWhenInUseAuthorization: () -> EffectPublisher<Never, Never>
-
-  public var requestTemporaryFullAccuracyAuthorization: (String) -> EffectPublisher<Never, Error>
-
-  public var set: (Properties) -> EffectPublisher<Never, Never>
-
-  public var significantLocationChangeMonitoringAvailable: () -> Bool
-
-  public var startMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
-
-  public var startMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
-
-  public var startMonitoringVisits: () -> EffectPublisher<Never, Never>
-
-  public var startUpdatingHeading: () -> EffectPublisher<Never, Never>
-
-  public var startUpdatingLocation: () -> EffectPublisher<Never, Never>
-
-  public var stopMonitoringForRegion: (Region) -> EffectPublisher<Never, Never>
-
-  public var stopMonitoringSignificantLocationChanges: () -> EffectPublisher<Never, Never>
-
-  public var stopMonitoringVisits: () -> EffectPublisher<Never, Never>
-
-  public var stopUpdatingHeading: () -> EffectPublisher<Never, Never>
-
-  public var stopUpdatingLocation: () -> EffectPublisher<Never, Never>
-
+  
+  public var accuracyAuthorization: @Sendable () async -> AccuracyAuthorization?
+  
+  public var authorizationStatus: @Sendable () async -> CLAuthorizationStatus = { .notDetermined }
+  
+  public var delegate: @Sendable () async -> AsyncStream<Action> = { .never }
+  
+  public var dismissHeadingCalibrationDisplay: @Sendable () async -> Void
+  
+  public var heading: @Sendable () async -> Heading?
+  
+  public var headingAvailable: @Sendable () async -> Bool = { false }
+  
+  public var isRangingAvailable: @Sendable () async -> Bool = { false }
+  
+  public var location: @Sendable () async -> Location?
+  
+  public var locationServicesEnabled: @Sendable () async -> Bool = { false }
+  
+  public var maximumRegionMonitoringDistance: @Sendable () async -> CLLocationDistance = { .nan }
+  
+  public var monitoredRegions: @Sendable () async -> Set<Region> = { .init() }
+  
+  public var requestAlwaysAuthorization: @Sendable () async -> Void
+  
+  public var requestLocation: @Sendable () async -> Void
+  
+  public var requestWhenInUseAuthorization: @Sendable () async -> Void
+  
+  public var requestTemporaryFullAccuracyAuthorization: @Sendable (String) async throws -> Void
+  
+  public var set: @Sendable (Properties) async -> Void
+  
+  public var significantLocationChangeMonitoringAvailable: @Sendable () async -> Bool = { false }
+  
+  public var startMonitoringForRegion: @Sendable (Region) async -> Void
+  
+  public var startMonitoringSignificantLocationChanges: @Sendable () async -> Void
+  
+  public var startMonitoringVisits: @Sendable () async -> Void
+  
+  public var startUpdatingHeading: @Sendable () async -> Void
+  
+  public var startUpdatingLocation: @Sendable () async -> Void
+  
+  public var stopMonitoringForRegion: @Sendable (Region) async -> Void
+  
+  public var stopMonitoringSignificantLocationChanges: @Sendable () async -> Void
+  
+  public var stopMonitoringVisits: @Sendable () async -> Void
+  
+  public var stopUpdatingHeading: @Sendable () async -> Void
+  
+  public var stopUpdatingLocation: @Sendable () async -> Void
+  
   /// Updates the given properties of a uniquely identified `CLLocationManager`.
-  public func set(
+  @Sendable public func set(
     activityType: CLActivityType? = nil,
     allowsBackgroundLocationUpdates: Bool? = nil,
     desiredAccuracy: CLLocationAccuracy? = nil,
@@ -317,71 +318,70 @@ public struct LocationManager {
     headingOrientation: CLDeviceOrientation? = nil,
     pausesLocationUpdatesAutomatically: Bool? = nil,
     showsBackgroundLocationIndicator: Bool? = nil
-  ) -> EffectPublisher<Never, Never> {
-    #if os(macOS) || os(tvOS) || os(watchOS)
-      return .none
-    #else
-      return self.set(
-        Properties(
-          activityType: activityType,
-          allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
-          desiredAccuracy: desiredAccuracy,
-          distanceFilter: distanceFilter,
-          headingFilter: headingFilter,
-          headingOrientation: headingOrientation,
-          pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
-          showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
-        )
+  ) async {
+#if os(macOS) || os(tvOS) || os(watchOS)
+#else
+    await self.set(
+      Properties(
+        activityType: activityType,
+        allowsBackgroundLocationUpdates: allowsBackgroundLocationUpdates,
+        desiredAccuracy: desiredAccuracy,
+        distanceFilter: distanceFilter,
+        headingFilter: headingFilter,
+        headingOrientation: headingOrientation,
+        pausesLocationUpdatesAutomatically: pausesLocationUpdatesAutomatically,
+        showsBackgroundLocationIndicator: showsBackgroundLocationIndicator
       )
-    #endif
+    )
+#endif
   }
 }
 
 extension LocationManager {
   public struct Properties: Equatable {
     var activityType: CLActivityType? = nil
-
+    
     var allowsBackgroundLocationUpdates: Bool? = nil
-
+    
     var desiredAccuracy: CLLocationAccuracy? = nil
-
+    
     var distanceFilter: CLLocationDistance? = nil
-
+    
     var headingFilter: CLLocationDegrees? = nil
-
+    
     var headingOrientation: CLDeviceOrientation? = nil
-
+    
     var pausesLocationUpdatesAutomatically: Bool? = nil
-
+    
     var showsBackgroundLocationIndicator: Bool? = nil
-
+    
     public static func == (lhs: Self, rhs: Self) -> Bool {
       var isEqual = true
-      #if os(iOS) || targetEnvironment(macCatalyst) || os(watchOS)
-        isEqual =
-          isEqual
-          && lhs.activityType == rhs.activityType
-          && lhs.allowsBackgroundLocationUpdates == rhs.allowsBackgroundLocationUpdates
-      #endif
+#if os(iOS) || targetEnvironment(macCatalyst) || os(watchOS)
       isEqual =
-        isEqual
-        && lhs.desiredAccuracy == rhs.desiredAccuracy
-        && lhs.distanceFilter == rhs.distanceFilter
-      #if os(iOS) || targetEnvironment(macCatalyst) || os(watchOS)
-        isEqual =
-          isEqual
-          && lhs.headingFilter == rhs.headingFilter
-          && lhs.headingOrientation == rhs.headingOrientation
-      #endif
-      #if os(iOS) || targetEnvironment(macCatalyst)
-        isEqual =
-          isEqual
-          && lhs.pausesLocationUpdatesAutomatically == rhs.pausesLocationUpdatesAutomatically
-          && lhs.showsBackgroundLocationIndicator == rhs.showsBackgroundLocationIndicator
-      #endif
+      isEqual
+      && lhs.activityType == rhs.activityType
+      && lhs.allowsBackgroundLocationUpdates == rhs.allowsBackgroundLocationUpdates
+#endif
+      isEqual =
+      isEqual
+      && lhs.desiredAccuracy == rhs.desiredAccuracy
+      && lhs.distanceFilter == rhs.distanceFilter
+#if os(iOS) || targetEnvironment(macCatalyst) || os(watchOS)
+      isEqual =
+      isEqual
+      && lhs.headingFilter == rhs.headingFilter
+      && lhs.headingOrientation == rhs.headingOrientation
+#endif
+#if os(iOS) || targetEnvironment(macCatalyst)
+      isEqual =
+      isEqual
+      && lhs.pausesLocationUpdatesAutomatically == rhs.pausesLocationUpdatesAutomatically
+      && lhs.showsBackgroundLocationIndicator == rhs.showsBackgroundLocationIndicator
+#endif
       return isEqual
     }
-
+    
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
@@ -404,7 +404,7 @@ extension LocationManager {
       self.pausesLocationUpdatesAutomatically = pausesLocationUpdatesAutomatically
       self.showsBackgroundLocationIndicator = showsBackgroundLocationIndicator
     }
-
+    
     @available(iOS, unavailable)
     @available(macCatalyst, unavailable)
     @available(watchOS, unavailable)
@@ -415,7 +415,7 @@ extension LocationManager {
       self.desiredAccuracy = desiredAccuracy
       self.distanceFilter = distanceFilter
     }
-
+    
     @available(iOS, unavailable)
     @available(macCatalyst, unavailable)
     @available(macOS, unavailable)

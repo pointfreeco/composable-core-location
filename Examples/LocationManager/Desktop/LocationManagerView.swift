@@ -1,6 +1,6 @@
 import Combine
 import ComposableArchitecture
-import ComposableCoreLocation
+import CoreLocationClient
 import MapKit
 import SwiftUI
 

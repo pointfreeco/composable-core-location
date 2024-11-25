@@ -5,7 +5,7 @@ import CoreLocation
 @available(macOS, unavailable)
 @available(tvOS, unavailable)
 @available(watchOS, unavailable)
-public struct Beacon: Hashable {
+public struct Beacon: Hashable, Sendable {
   public var accuracy: CLLocationAccuracy
   public var major: NSNumber
   public var minor: NSNumber

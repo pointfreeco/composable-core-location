@@ -1,4 +1,4 @@
-import ComposableCoreLocation
+import CoreLocationClient
 import XCTest
 
 class ComposableCoreLocationTests: XCTestCase {

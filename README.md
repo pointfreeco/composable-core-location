@@ -21,7 +21,7 @@ Check out the [LocationManager](./Examples/LocationManager) demo to see Composab
 To use ComposableCoreLocation in your application, you can add an action to your domain that represents all of the actions the manager can emit via the `CLLocationManagerDelegate` methods:
 
 ```swift
-import ComposableCoreLocation
+import CoreLocationClient
 
 enum AppAction {
   case locationManager(LocationManager.Action)

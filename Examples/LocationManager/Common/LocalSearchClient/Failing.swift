@@ -1,8 +1,8 @@
-import ComposableArchitecture
+import XCTestDynamicOverlay
 import MapKit
 
 extension LocalSearchClient {
   public static let failing = Self(
-    search: { _ in .failing("LocalSearchClient.search") }
+    search: { _ in unimplemented("LocalSearchClient.search") }
   )
 }

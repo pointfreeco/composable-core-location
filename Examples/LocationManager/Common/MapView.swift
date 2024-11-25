@@ -90,6 +90,8 @@ public class MapViewCoordinator: NSObject, MKMapViewDelegate {
   }
 
   public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-    self.mapView.region = CoordinateRegion(coordinateRegion: mapView.region)
+      DispatchQueue.main.async {
+          self.mapView.region = CoordinateRegion(coordinateRegion: mapView.region)
+      }
   }
 }
